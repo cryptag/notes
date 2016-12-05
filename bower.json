@@ -1,5 +1,5 @@
 {
-  "name": "CryptWiki",
+  "name": "cryptwiki",
   "description": "Collaborative wiki app",
   "main": "main.js",
   "authors": [

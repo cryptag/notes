@@ -7,9 +7,7 @@ export function listPages(backendName){
   return reqPost('/rows/list', {"plaintags": plaintags}, backendName);
 }
 
-export function getPages(backendName, tags){
-  tags = tags || [];
-
+export function getPages(backendName, tags=[]){
   let plaintags = ['type:md'];
   plaintags = plaintags.concat(tags)
   return reqPost('/rows/get', {"plaintags": plaintags}, backendName);
@@ -18,7 +16,7 @@ export function getPages(backendName, tags){
 export function createEmptyPage(backendName, parentRow, title){
   let row = {
     unencrypted: null,
-    plaintags: ['title:'+title, 'type:wikipage', 'app:cryptagnotes',
+    plaintags: ["title:" + title, 'type:wikipage', 'app:cryptagnotes',
                 'parentrow:'+parentRow]
   }
   return reqPost('/rows', row, backendName);
@@ -32,7 +30,7 @@ export function createPage(title, contents, backendName){
 function pageToPost(title, contents){
   return {
     unencrypted: contents,
-    plaintags: ['type:text', 'type:md', 'app:cryptagnotes', 'title:'+title]
+    plaintags: ['type:text', 'type:md', 'app:cryptagnotes', `title:${title}`]
   }
 }
 
@@ -40,6 +38,6 @@ function pageToPost(title, contents){
 
 export function updatePage(pageKey, title, contents, backendName){
   let row = pageToPost(title, contents);
-  row.plaintags.push('parentrow:'+pageKey);
+  row.plaintags.push("parentrow:" + pageKey);
   return reqPost('/rows', row, backendName);
 }

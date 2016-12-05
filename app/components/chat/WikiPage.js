@@ -1,40 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class WikiPage extends Component {
-  onSelect(){
-    let key = this.props.page.key;
-    this.props.onSelectPage(key);
+  constructor(props){
+    super(props);
+    this.onSelectPage = this.onSelectPage.bind(this);
+  }
+
+  onSelectPage(e){
+    let { loadPageByKey, page } = this.props;
+    loadPageByKey(page.key);
   }
 
   render(){
-    console.log("this.props: ", this.props);
-    let page = this.props.page;
+    let { page } = this.props;
+
     return (
       <li>
-        <a href="#" onClick={this.onSelect.bind(this)}>{page.title || "Default Title"}</a>
+        <a href="#" onClick={this.onSelectPage}>{page.title || "Default Title"}</a>
       </li>
-    )
+    );
   }
 }
 
-// class WikiPage extends Component {
-//   render(){
-//     let myUsername = this.props.myUsername;
-//     let room = this.props.room;
-//
-//     return (
-//      <div className="chatroom">
-//         {(room.messages || []).map(message => {
-//           let fromMe = (message.from === myUsername);
-//           return (
-//             <div key={message.key} className={fromMe ? 'chat-outgoing' : 'chat-incoming'}>
-//               {message.from}: {message.msg}
-//             </div>
-//           )
-//         })}
-//       </div>
-//     )
-//   }
-// }
+WikiPage.propTypes = {
+  page: PropTypes.object.isRequired,
+  loadPageByKey: PropTypes.func.isRequired
+}
 
 export default WikiPage;

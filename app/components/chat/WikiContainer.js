@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import WikiPage from './WikiPage';
 
@@ -7,15 +7,24 @@ import WikiPage from './WikiPage';
 // TODO: Add Preview tab to view page as rendered Markdown
 class WikiContainer extends Component {
   render(){
+    let { currentPage, page, isLoading, loadPageByKey } = this.props;
+
     return (
       <div className="content">
+        {isLoading && "Loading..."}
         <WikiPage
-          currentPage={this.props.currentPage}
-          page={this.props.page}
-          isLoading={this.props.isLoading} />
+          currentPage={currentPage}
+          page={page}
+          loadPageByKey={loadPageByKey} />
       </div>
     );
   }
+}
+
+WikiContainer.propTypes = {
+  currentPage: PropTypes.object,
+  page: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool
 }
 
 export default WikiContainer;

@@ -20,35 +20,46 @@ export default class App extends Component {
     };
 
     this.loadPageList = this.loadPageList.bind(this);
+    this.loadPageByKey = this.loadPageByKey.bind(this);
+  }
 
-    // this.onSendMessage = this.onSendMessage.bind(this);
-    // this.populateContainer = this.populateContainer.bind(this);
+  promptForUsername(){
+    // prompt function not supported
+    // we'll need a custom modal or overlay of some sort.
+    prompt('Username?');
   }
 
   componentDidMount(){
+    // this.promptForUsername();
     this.loadPageList();
   }
 
   loadPageList(){
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackend;
+    // console.log(backend);
 
     listPages(backend).then( (response) => {
       let pages = formatPages(response.body);
       this.setState({
-        pages: pages
+        pages: pages,
+        isLoading: false
       });
+
+      console.log('pages');
+      console.log(pages);
 
       /* Where should these be? */
 
       // this.loadPageContents(page);  // Let React components handle this
-      this.pollForPages();
+      // this.pollForPages();
     }, (respErr) => {
       console.log("Error loading page list: " + respErr);
     });
   }
 
   loadPageByKey(pageKey){
+    this.setState({'isLoading': true });
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackend;
     getPages(backend, [pageKey]).then( (response) => {
@@ -59,7 +70,8 @@ export default class App extends Component {
       }
 
       this.setState({
-        currentPage: pages[0]
+        currentPage: pages[0],
+        isLoading: false
       });
     })
   }
@@ -72,23 +84,27 @@ export default class App extends Component {
   }
 
   render(){
+    let { pages, currentPage, myUsername, isLoading } = this.state;
+
     return (
       <main>
         <Nav />
         {/*
         <BackendList
-          backends={this.state.backends} />
+          backends={backends} />
          */}
 
         <WikiPageList
-          pages={this.state.pages}
-          onSelectPage={this.loadPageByKey} />
+          pages={pages}
+          loadPageByKey={this.loadPageByKey}/>
 
         {/*TODO: Add UI panel here (Bold, Italics, Underline, Heading 1, etc)*/}
         <WikiContainer
-          page={this.state.currentPage}
-          myUsername={this.state.myUsername}
-          isLoading={this.state.isLoading} />
+          page={currentPage}
+          myUsername={myUsername}
+          isLoading={isLoading}
+          loadPageByKey={this.loadPageByKey}/>
+
       </main>
     );
   }

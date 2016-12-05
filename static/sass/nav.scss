@@ -1,0 +1,26 @@
+.navigation {
+  background-color: #0f0f17;
+  color: $funky-purple;
+  position: relative;
+
+  .logo {
+    position: absolute;
+    bottom: 300px;
+    right: 0;
+    transform: rotate(-90deg);
+    transform-origin: bottom right;
+
+    h1 {
+      color: #555;
+      text-transform: uppercase;
+    }
+  }
+
+  .tab {
+    padding: 20px;
+
+    a {
+      color: $funky-purple;
+    }
+  }
+}
