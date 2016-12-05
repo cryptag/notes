@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CrypTag Notes</title>
+
+   <!-- bower:css -->
+   <link rel="stylesheet" href="static/lib/bootstrap/dist/css/bootstrap.css" />
+   <link rel="stylesheet" href="static/lib/font-awesome/css/font-awesome.css" />
+   <!-- endbower -->
+   <!-- inject:css -->
+   <link rel="stylesheet" href="static/css/styles.css">
+   <!-- endinject -->
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <audio id="notification-audio" src="static/media/notification_gertz.wav"></audio>
+  </body>
+
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+  <!-- bower:js -->
+  <script src="static/lib/jquery/dist/jquery.js"></script>
+  <script src="static/lib/bootstrap/dist/js/bootstrap.js"></script>
+  <!-- endbower -->
+  <!-- inject:js -->
+  <!-- endinject -->
+
+  <!-- Insert this line after script imports -->
+  <script>if (window.module) module = window.module;</script>
+
+  <script>
+    // You can also require other files to run in this process
+    require('babel-register');
+    require('./renderer.js')
+  </script>
+</html>

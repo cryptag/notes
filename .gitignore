@@ -1,0 +1,6 @@
+static/lib
+node_modules
+CryptWiki-darwin-x64/
+CryptWiki-linux-x64/
+*~
+.DS_Store
