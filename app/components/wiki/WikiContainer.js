@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import WikiPage from './WikiPage';
+import WikiPageEdit from './WikiPageEdit';
 
 // TODO: Add header 1-6/bold/italics/underlined/etc bottons
 //
@@ -11,12 +12,12 @@ class WikiContainer extends Component {
   }
 
   render(){
-    let { page, isLoading, isEditing } = this.props;
+    let { page, isEditing, onEditPage, onUpdatePage, onCancelUpdate } = this.props;
 
     return (
       <div>
-        {isLoading && "Loading..." }
-        {!isLoading && <WikiPage page={page} isEditing={isEditing} />}
+        {!isEditing && <WikiPage page={page} onEditPage={onEditPage} />}
+        {isEditing && <WikiPageEdit page={page} onUpdatePage={onUpdatePage} onCancelUpdate={onCancelUpdate} />}
       </div>
     );
   }
@@ -24,7 +25,9 @@ class WikiContainer extends Component {
 
 WikiContainer.propTypes = {
   page: PropTypes.object.isRequired,
-  isLoading: PropTypes.bool,
+  onEditPage: PropTypes.func.isRequired,
+  onUpdatePage: PropTypes.func.isRequired,
+  onCancelUpdate: PropTypes.func.isRequired,
   isEditing: PropTypes.bool
 }
 

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
 class WikiPageLink extends Component {
-  constructor(props){
-    super(props);
+  constructor(){
+    super(...arguments);
     this.onSelectPage = this.onSelectPage.bind(this);
   }
 
