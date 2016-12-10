@@ -27,4 +27,30 @@ const requestPost = function(urlSuffix, data, backendName){
   });
 }
 
+const requestGet = function(urlSuffix, backendName){
+  return new Promise((resolve, reject) => {
+    request
+      .get(urlSuffix)
+      .use(cryptagdPrefix)
+      .set('X-Backend', backendName || '')
+      .end((err, res) => {
+        let respErr = '';
+
+        if (err) {
+          if (typeof res === 'undefined') {
+            respErr = err.toString();
+          } else {
+            // cryptagd's error format: {"error": "..."}
+            respErr = res.body.error;
+          }
+
+          reject(respErr);
+        }
+
+        resolve(res);
+      });
+  });
+}
+
 export const reqPost = requestPost;
+export const reqGet = requestGet;

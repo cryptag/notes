@@ -3,6 +3,7 @@ import { encodeObjForPost } from '../../utils/tags';
 
 
 export function listPages(backendName){
+  console.log("listPages(", backendName, ")");
   let plaintags = ['type:md'];
   return reqPost('/rows/list', {"plaintags": plaintags}, backendName);
 }
