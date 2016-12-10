@@ -93,6 +93,13 @@ class App extends Component {
 
     }, (respErr) => {
       console.log("Error loading page list: " + respErr);
+
+      // Would probably be better to revert to previous backend and
+      // continue showing its pages list, but this is a quick fix that
+      // keeps the selected backend and the pages list in sync
+      this.setState({
+        pages: []
+      })
     });
   }
 
