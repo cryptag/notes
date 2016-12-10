@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import WikiPage from './WikiPage';
+import WikiPageLink from './WikiPageLink';
 
 class WikiPageList extends Component {
 
@@ -14,7 +14,7 @@ class WikiPageList extends Component {
         <ul>
           {pages.map( (page) => {
             return (
-              <WikiPage
+              <WikiPageLink
                 key={page.key}
                 page={page}
                 loadPageByKey={loadPageByKey} />

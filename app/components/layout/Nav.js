@@ -5,7 +5,6 @@ class Nav extends Component {
     return (
       <div className="navigation">
         <div className="logo">
-
           <h1>CrypTag Notes</h1>
         </div>
 

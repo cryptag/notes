@@ -16,7 +16,7 @@ export function getPages(backendName, tags=[]){
 export function createEmptyPage(backendName, parentRow, title){
   let row = {
     unencrypted: null,
-    plaintags: ["title:" + title, 'type:wikipage', 'app:cryptagnotes',
+    plaintags: [`title:${title}`, 'type:wikipage', 'app:cryptagnotes',
                 'parentrow:'+parentRow]
   }
   return reqPost('/rows', row, backendName);

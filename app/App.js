@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 
-import Nav from './components/layout/Nav';
-import { listPages, getPages } from './data/chat/pages';
+import { listPages, getPages } from './data/wiki/pages';
 import { formatPages } from './utils/page';
 
-import WikiPageList from './components/chat/WikiPageList';
-import WikiContainer from './components/chat/WikiContainer';
+import WikiPageList from './components/wiki/WikiPageList';
+import WikiContainer from './components/wiki/WikiContainer';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props){
     super(props);
 
@@ -16,7 +15,8 @@ export default class App extends Component {
       currentPage: {},
       pages: [],
       myUsername: '',
-      isLoading: true
+      isLoading: true,
+      isEditing: false
     };
 
     this.loadPageList = this.loadPageList.bind(this);
@@ -65,8 +65,8 @@ export default class App extends Component {
     getPages(backend, [pageKey]).then( (response) => {
       let pages = formatPages(response.body);
       if (pages.length === 0) {
-          console.log("Error fetching row with ID tag", pageKey, "from Backend", backend);
-        return
+        console.log("Error fetching row with ID tag", pageKey, "from Backend", backend);
+        return;
       }
 
       this.setState({
@@ -84,28 +84,28 @@ export default class App extends Component {
   }
 
   render(){
-    let { pages, currentPage, myUsername, isLoading } = this.state;
+    let { pages, currentPage, myUsername, isLoading, isEditing } = this.state;
 
     return (
       <main>
-        <Nav />
-        {/*
-        <BackendList
-          backends={backends} />
-         */}
 
         <WikiPageList
           pages={pages}
-          loadPageByKey={this.loadPageByKey}/>
+          loadPageByKey={this.loadPageByKey}
+          page={currentPage} />
 
-        {/*TODO: Add UI panel here (Bold, Italics, Underline, Heading 1, etc)*/}
         <WikiContainer
           page={currentPage}
           myUsername={myUsername}
           isLoading={isLoading}
+          isEditing={isEditing}
           loadPageByKey={this.loadPageByKey}/>
 
       </main>
     );
   }
 }
+
+App.propTypes = {}
+
+export default App;

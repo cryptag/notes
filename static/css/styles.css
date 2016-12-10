@@ -128,3 +128,6 @@ ul {
     padding: 20px; }
     .navigation .tab a {
       color: #978de3; }
+
+wiki-page {
+  word-wrap: break-word; }
