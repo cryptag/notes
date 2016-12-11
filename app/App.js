@@ -220,14 +220,20 @@ class App extends Component {
   }
 
   render(){
-    let { pages, currentPage, username, isLoading, isEditing, showUsernameModal } = this.state;
+    let { pages, currentPage, isLoading, isEditing } = this.state;
+    let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
 
     return (
       <div>
         <div className="side-content">
+          <h1>CryptWiki</h1>
+          <hr/>
           <div>
-            <strong>Welcome, {username}!</strong>
+            <strong>
+              <i className="fa fa-user-circle-o"></i>&nbsp;
+              Welcome, {username}!
+            </strong>
             <button className="btn btn-link btn-sm" onClick={this.onSetUsernameClick}>
               <i className="fa fa-pencil-square-o"></i>
             </button>

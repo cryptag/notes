@@ -6,6 +6,7 @@ html, body, ul{
 body {
   color: #222;
   font-family: 'Lato', sans-serif;
+  background-color: #1e202f;
 }
 
 main {
@@ -13,8 +14,20 @@ main {
 }
 
 .wiki-page {
+  margin-bottom: 15px;
+
   .toolbar {
     text-align: right;
+    button {
+      margin-left: 15px;
+    }
+  }
+}
+
+.wiki-page-edit {
+  .page-content {
+    border: none;
+    padding: 0px;
   }
 }
 
@@ -30,6 +43,15 @@ main {
   }
 }
 
+.btn-primary {
+  background-color: #978de3;
+  border: solid 1px #1e202f;
+}
+
+.btn-primary:hover {
+  background-color: #1e202f;
+}
+
 .main-content,
 .side-content {
   float: left;
@@ -39,14 +61,26 @@ main {
 
 .side-content {
   width: 20%;
+  color: #978de3;
+
+  a,
+  .btn-link {
+    font-weight: bold;
+    color: white;
+  }
 }
 
 .main-content {
-  width: 75%;
+  width: 80%;
+  background-color: #fff;
 }
 
 
 .page-content {
+  padding: 15px;
+  border: solid 1px #ccc;
+  border-radius: 15px;
+
   textarea {
     height: 500px;
     width: 800px;

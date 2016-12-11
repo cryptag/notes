@@ -32,13 +32,13 @@ class UsernameModal extends Component {
             <Modal.Title>Set Username</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div ref="username">
-              <input type="text" defaultValue={username} />
+            <div className="form-group" ref="username">
+              <input type="text" className="form-control" defaultValue={username} placeholder="enter username" />
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.onSetUsernameClick} bsStyle="primary">Set Username</Button>
             <Button onClick={onCloseModal}>Cancel</Button>
+            <Button onClick={this.onSetUsernameClick} bsStyle="primary">Set Username</Button>
           </Modal.Footer>
         </Modal>
       </div>

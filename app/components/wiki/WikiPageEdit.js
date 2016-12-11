@@ -37,7 +37,7 @@ class WikiPageEdit extends Component {
     content = utf8.decode(atob(content));
 
     return (
-      <div className="wiki-page">
+      <div className="wiki-page wiki-page-edit">
         <form>
           <div className="toolbar">
             <button className="btn btn-primary" onClick={this.onSaveClick}>Save</button>

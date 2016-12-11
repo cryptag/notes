@@ -5,13 +5,22 @@ html, body, ul {
 
 body {
   color: #222;
-  font-family: 'Lato', sans-serif; }
+  font-family: 'Lato', sans-serif;
+  background-color: #1e202f; }
 
 main {
   height: 100vh; }
 
-.wiki-page .toolbar {
-  text-align: right; }
+.wiki-page {
+  margin-bottom: 15px; }
+  .wiki-page .toolbar {
+    text-align: right; }
+    .wiki-page .toolbar button {
+      margin-left: 15px; }
+
+.wiki-page-edit .page-content {
+  border: none;
+  padding: 0px; }
 
 .form-group label {
   text-transform: uppercase;
@@ -21,6 +30,13 @@ main {
 .form-group .form-control {
   width: 100%; }
 
+.btn-primary {
+  background-color: #978de3;
+  border: solid 1px #1e202f; }
+
+.btn-primary:hover {
+  background-color: #1e202f; }
+
 .main-content,
 .side-content {
   float: left;
@@ -28,14 +44,24 @@ main {
   padding: 15px; }
 
 .side-content {
-  width: 20%; }
+  width: 20%;
+  color: #978de3; }
+  .side-content a,
+  .side-content .btn-link {
+    font-weight: bold;
+    color: white; }
 
 .main-content {
-  width: 75%; }
+  width: 80%;
+  background-color: #fff; }
 
-.page-content textarea {
-  height: 500px;
-  width: 800px; }
+.page-content {
+  padding: 15px;
+  border: solid 1px #ccc;
+  border-radius: 15px; }
+  .page-content textarea {
+    height: 500px;
+    width: 800px; }
 
 ul {
   list-style: none; }
