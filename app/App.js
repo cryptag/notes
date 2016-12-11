@@ -31,13 +31,14 @@ class App extends Component {
 
     this.loadPageList = this.loadPageList.bind(this);
     this.loadPageByKey = this.loadPageByKey.bind(this);
+    this.loadBackends = this.loadBackends.bind(this);
 
     this.onEditPage = this.onEditPage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
-    this.closeUsernameModal = this.closeUsernameModal.bind(this);
+    this.onCloseUsernameModal = this.onCloseUsernameModal.bind(this);
     this.onSetUsername = this.onSetUsername.bind(this);
 
     this.onSelectBackend = this.onSelectBackend.bind(this);
@@ -61,7 +62,11 @@ class App extends Component {
   componentDidMount(){
     this.loadUsername();
     this.loadPageList('');
+    this.loadBackends();
+    
+  }
 
+  loadBackends(){
     let that = this;
 
     getBackends().then( (response) => {
@@ -183,7 +188,7 @@ class App extends Component {
     });
   }
 
-  closeUsernameModal(){
+  onCloseUsernameModal(){
     this.setState({
       showUsernameModal: false
     });
@@ -200,7 +205,7 @@ class App extends Component {
     this.setState({
       'username': username
     });
-    this.closeUsernameModal();
+    this.onCloseUsernameModal();
   }
 
   onSelectBackend(newBackendName){
@@ -219,40 +224,49 @@ class App extends Component {
     let { backends, currentBackendName } = this.state;
 
     return (
-      <main>
-        <div>
-          <h2>Welcome, {username}!</h2>
-          <button className="btn btn-primary" onClick={this.onSetUsernameClick}>Update Username</button>
-        </div>
-        {showUsernameModal && <UsernameModal 
-                                username={username}
-                                showModal={showUsernameModal}
-                                onSetUsername={this.onSetUsername}
-                                closeModal={this.closeUsernameModal} />}
+      <div>
+        <div className="side-content">
+          <div>
+            <strong>Welcome, {username}!</strong>
+            <button className="btn btn-link btn-sm" onClick={this.onSetUsernameClick}>
+              <i className="fa fa-pencil-square-o"></i>
+            </button>
+          </div>
+          {showUsernameModal && <UsernameModal 
+                                  username={username}
+                                  showModal={showUsernameModal}
+                                  onSetUsername={this.onSetUsername}
+                                  onCloseModal={this.onCloseUsernameModal} />}
 
-        <div className="backend-container">
-          <h3>Backends</h3>
-          <DropdownList
-            data={backends.map(bk => bk.Name)}
-            value={currentBackendName}
-            onChange={this.onSelectBackend} />
+          <div className="backend-container">
+            <h3>Backends</h3>
+            <DropdownList
+              data={backends.map(bk => bk.Name)}
+              value={currentBackendName}
+              onChange={this.onSelectBackend} />
+          </div>
+
+          <WikiPageList
+            pages={pages}
+            loadPageByKey={this.loadPageByKey}
+            page={currentPage} />
+
         </div>
 
-        <WikiPageList
-          pages={pages}
-          loadPageByKey={this.loadPageByKey}
-          page={currentPage} />
-
-        <div className="wiki-container">
-          {isLoading && <Throbber/> }
-          {!isLoading && <WikiContainer
-                            page={currentPage}
-                            isEditing={isEditing}
-                            onEditPage={this.onEditPage}
-                            onCancelUpdate={this.onCancelUpdate}
-                            onUpdatePage={this.onUpdatePage}/>}
+        <div className="main-content">
+          <main>
+            <div className="wiki-container">
+              {isLoading && <Throbber/> }
+              {!isLoading && <WikiContainer
+                                page={currentPage}
+                                isEditing={isEditing}
+                                onEditPage={this.onEditPage}
+                                onCancelUpdate={this.onCancelUpdate}
+                                onUpdatePage={this.onUpdatePage}/>}
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
     );
   }
 }

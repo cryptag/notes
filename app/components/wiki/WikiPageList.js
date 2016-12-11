@@ -9,7 +9,7 @@ class WikiPageList extends Component {
 
     return (
       <div className="pages">
-        <h2>Pages</h2>
+        <h3>Pages</h3>
 
         <ul>
           {pages.map( (page) => {

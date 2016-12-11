@@ -5,103 +5,37 @@ html, body, ul {
 
 body {
   color: #222;
-  font-family: 'Lato', sans-serif;
-  display: flex;
-  flex-direction: column; }
+  font-family: 'Lato', sans-serif; }
 
 main {
-  height: 100vh;
-  display: flex; }
+  height: 100vh; }
+
+.wiki-page .toolbar {
+  text-align: right; }
+
+.form-group label {
+  text-transform: uppercase;
+  color: #666;
+  font-size: 12px; }
+
+.form-group .form-control {
+  width: 100%; }
+
+.main-content,
+.side-content {
+  float: left;
+  box-sizing: border-box;
+  padding: 15px; }
+
+.side-content {
+  width: 20%; }
+
+.main-content {
+  width: 75%; }
 
 .page-content textarea {
   height: 500px;
   width: 800px; }
-
-.navigation,
-.channels,
-.content,
-.summary {
-  box-sizing: border-box;
-  display: flex; }
-
-/* ugly hack to undo flexbox layout here since I don't know flexbox. ;( */
-.content {
-  display: block; }
-
-.navigation {
-  flex: 0.5;
-  flex-direction: column; }
-
-.channels {
-  flex: 2.5;
-  background-color: #1e202f;
-  flex-direction: column; }
-  .channels ul li {
-    color: #978de3;
-    padding: 10px; }
-    .channels ul li ul.chat li a {
-      color: white;
-      font-size: 16px; }
-    .channels ul li .name {
-      padding-left: 15px; }
-  .channels h2 {
-    color: #ccc;
-    font-size: 1.3em;
-    margin-left: 5px; }
-
-.content {
-  flex: 5 5;
-  padding: 15px; }
-
-.summary {
-  flex: 1.5 1.5 10%; }
-
-.chatroom {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; }
-  .chatroom .chat-incoming {
-    text-align: left;
-    padding-left: 5%; }
-  .chatroom .chat-outgoing {
-    text-align: right;
-    padding-right: 5%; }
-
-.message-box {
-  height: calc(100vh - 120px);
-  overflow-y: scroll; }
-  .message-box ul li {
-    display: block;
-    border: solid 1px #eee;
-    border-radius: 10px;
-    padding: 5px 15px;
-    margin-bottom: 5px;
-    width: 80%;
-    position: relative; }
-    .message-box ul li .delete-message {
-      position: absolute;
-      top: -10px;
-      right: -6px;
-      color: #333;
-      visibility: hidden; }
-  .message-box ul li.chat-outgoing {
-    float: right;
-    color: white;
-    background-color: #827cd2; }
-    .message-box ul li.chat-outgoing .username {
-      display: none; }
-  .message-box ul li.chat-incoming {
-    float: left;
-    color: #333; }
-    .message-box ul li.chat-incoming .username {
-      display: block;
-      font-style: italic; }
-  .message-box ul li:hover .delete-message {
-    visibility: visible; }
-
-.message-form {
-  flex-direction: column;
-  height: 100px; }
 
 ul {
   list-style: none; }
@@ -132,6 +66,3 @@ ul {
     padding: 20px; }
     .navigation .tab a {
       color: #978de3; }
-
-wiki-page {
-  word-wrap: break-word; }

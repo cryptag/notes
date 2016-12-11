@@ -28,9 +28,11 @@ class WikiPage extends Component {
         <div className="toolbar">
           <button className="btn btn-primary" onClick={this.onEditClick}>Edit</button>
         </div>
+        <hr/>
         <div className="page-title-bar">
           <h2>{title}</h2>
         </div>
+        <hr/>
         <div className="page-content">
           <ReactMarkdown
             source={content} />

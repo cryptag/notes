@@ -6,147 +6,49 @@ html, body, ul{
 body {
   color: #222;
   font-family: 'Lato', sans-serif;
-  display: flex;
-  flex-direction: column;
 }
 
 main {
   height: 100vh;
-  display: flex;
 }
+
+.wiki-page {
+  .toolbar {
+    text-align: right;
+  }
+}
+
+.form-group {
+  label {
+    text-transform: uppercase;
+    color: #666;
+    font-size: 12px;
+  }
+
+  .form-control {
+    width: 100%;
+  }
+}
+
+.main-content,
+.side-content {
+  float: left;
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.side-content {
+  width: 20%;
+}
+
+.main-content {
+  width: 75%;
+}
+
 
 .page-content {
   textarea {
     height: 500px;
     width: 800px;
   }
-}
-
-.navigation,
-.channels,
-.content,
-.summary {
-  box-sizing: border-box;
-  display: flex;
-}
-
-/* ugly hack to undo flexbox layout here since I don't know flexbox. ;( */
-.content {
-  display: block;
-}
-
-.navigation {
-  flex: 0.5;
-  flex-direction: column;
-}
-
-.channels {
-  flex: 2.5;
-  background-color: #1e202f;
-  flex-direction: column;
-
-  ul {
-    li {
-      color: $funky-purple;
-      padding: 10px;
-
-      ul.chat {
-        li {
-          a {
-            color: white;
-            font-size: 16px;
-
-          }
-        }
-      }
-
-      .name {
-        padding-left: 15px;
-      }
-    }
-  }
-
-  h2 {
-    color: #ccc;
-    font-size: 1.3em;
-    margin-left: 5px;
-  }
-}
-
-.content {
-  flex: 5 5;
-  padding: 15px;
-}
-
-.summary {
-  flex: 1.5 1.5 10%;
-}
-
-.chatroom {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-
-  .chat-incoming {
-    text-align: left;
-    padding-left: 5%;
-  }
-  .chat-outgoing {
-    text-align: right;
-    padding-right: 5%;
-  }
-}
-
-.message-box {
-  height: calc(100vh - 120px);
-  overflow-y: scroll;
-
-  ul {
-    li {
-      display: block;
-      border: solid 1px #eee;
-      border-radius: 10px;
-      padding: 5px 15px;
-      margin-bottom: 5px;
-      width: 80%;
-      position: relative;
-
-      .delete-message {
-        position: absolute;
-        top: -10px;
-        right: -6px;
-        color: #333;
-        visibility: hidden;
-      }
-    }
-    li.chat-outgoing {
-      float: right;
-      color: white;
-      background-color: #827cd2;
-
-      .username {
-        display:none;
-      }
-    }
-    li.chat-incoming {
-      float: left;
-      color: #333;
-
-      .username {
-        display: block;
-        font-style: italic;
-      }
-    }
-
-    li:hover {
-      .delete-message {
-        visibility: visible;
-      }
-    }
-  }
-}
-
-.message-form {
-  flex-direction: column;
-  height: 100px;
 }

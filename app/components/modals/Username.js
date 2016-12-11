@@ -23,11 +23,11 @@ class UsernameModal extends Component {
   }
 
   render(){
-    let { showModal, username, closeModal } = this.props;
+    let { showModal, username, onCloseModal } = this.props;
 
     return (
       <div>
-        <Modal show={showModal} onHide={this.closeModal}>
+        <Modal show={showModal} onHide={this.onCloseModal}>
           <Modal.Header>
             <Modal.Title>Set Username</Modal.Title>
           </Modal.Header>
@@ -38,7 +38,7 @@ class UsernameModal extends Component {
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.onSetUsernameClick} bsStyle="primary">Set Username</Button>
-            <Button onClick={closeModal}>Cancel</Button>
+            <Button onClick={onCloseModal}>Cancel</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -50,7 +50,7 @@ class UsernameModal extends Component {
 UsernameModal.propType = {
   showModal: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onCloseModal: PropTypes.func.isRequired,
   onSetUsername: PropTypes.func.isRequired
 }
 
