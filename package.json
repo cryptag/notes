@@ -43,6 +43,7 @@
     "mocha": "^2.5.3",
     "node-notifier": "^4.6.0",
     "react": "^15.1.0",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.1.0",
     "react-markdown": "^2.4.2",
     "superagent": "^2.0.0",

@@ -6,16 +6,22 @@ import { formatPages } from './utils/page';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
 import Throbber from './components/general/Throbber';
+import UsernameModal from './components/modals/Username';
+
+const USERNAME_KEY = 'username';
 
 class App extends Component {
   constructor(){
     super(...arguments);
 
+    let username = localStorage.getItem(USERNAME_KEY);
+
     this.state = {
       currentBackend: '',
       currentPage: {},
       pages: [],
-      myUsername: '',
+      username: username,
+      showUsernameModal: false,
       isLoading: true,
       isEditing: false
     };
@@ -26,16 +32,28 @@ class App extends Component {
     this.onEditPage = this.onEditPage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
+
+    this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
+    this.closeUsernameModal = this.closeUsernameModal.bind(this);
+    this.onSetUsername = this.onSetUsername.bind(this);
   }
 
   promptForUsername(){
-    // prompt function not supported
-    // we'll need a custom modal or overlay of some sort.
-    prompt('Username?');
+    this.setState({
+      showUsernameModal: true
+    });
+  }
+
+  loadUsername(){
+    let { username } = this.state;
+
+    if (!username){
+      this.promptForUsername();
+    }
   }
 
   componentDidMount(){
-    // this.promptForUsername();
+    this.loadUsername();
     this.loadPageList();
   }
 
@@ -121,17 +139,45 @@ class App extends Component {
   }
 
   onCancelUpdate(){
-    console.log('bailing on edit')
     this.setState({
       isEditing: false
     });
   }
 
+  closeUsernameModal(){
+    this.setState({
+      showUsernameModal: false
+    });
+  }
+
+  onSetUsernameClick(e){
+    this.setState({
+      showUsernameModal: true
+    });
+  }
+
+  onSetUsername(username){
+    localStorage.setItem(USERNAME_KEY, username);
+    this.setState({
+      'username': username
+    });
+    this.closeUsernameModal();
+  }
+
   render(){
-    let { pages, currentPage, myUsername, isLoading, isEditing } = this.state;
+    let { pages, currentPage, username, isLoading, isEditing, showUsernameModal } = this.state;
 
     return (
       <main>
+        <div>
+          <h2>Welcome, {username}!</h2>
+          <button onClick={this.onSetUsernameClick}>Update Username</button>
+        </div>
+        {showUsernameModal && <UsernameModal 
+                                username={username}
+                                showModal={showUsernameModal}
+                                onSetUsername={this.onSetUsername}
+                                closeModal={this.closeUsernameModal} />}
 
         <WikiPageList
           pages={pages}
