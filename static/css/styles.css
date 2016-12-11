@@ -13,6 +13,10 @@ main {
   height: 100vh;
   display: flex; }
 
+.page-content textarea {
+  height: 500px;
+  width: 800px; }
+
 .navigation,
 .channels,
 .content,

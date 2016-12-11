@@ -75,7 +75,7 @@ class App extends Component {
           backendName = "default";
         }
 
-        console.log("Setting currentBackendName to:", backendName);
+        console.log("Setting currentBackendName to: ", backendName);
 
         this.setState({
           currentBackendName: backendName,
@@ -161,7 +161,7 @@ class App extends Component {
 
     // is this correct syntax for passing along all func args
     // with spread operator + backend?
-    updatePage(...arguments, this.state.currentBackendName)
+    updatePage(pageKey, pageTitle, pageContent, this.state.currentBackendName)
       .then((response) => {
         console.log(response.body);
         // TODO: response returns new page object?
@@ -222,7 +222,7 @@ class App extends Component {
       <main>
         <div>
           <h2>Welcome, {username}!</h2>
-          <button onClick={this.onSetUsernameClick}>Update Username</button>
+          <button className="btn btn-primary" onClick={this.onSetUsernameClick}>Update Username</button>
         </div>
         {showUsernameModal && <UsernameModal 
                                 username={username}

@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { findDOMNode } from 'react-dom';
+
 import ReactMarkdown from 'react-markdown';
 
 const utf8 = require('utf8');
@@ -15,8 +17,8 @@ class WikiPageEdit extends Component {
 
   onSaveClick(e){
     let { onUpdatePage, page } = this.props;
-    let title = page.title;
-    let content = page.contents;
+    let title = $(findDOMNode(this.refs.page_title)).find('input').val();
+    let content = $(findDOMNode(this.refs.page_content)).find('textarea').val();;
     onUpdatePage(page.key, title, content);
   }
 
@@ -36,10 +38,10 @@ class WikiPageEdit extends Component {
           <button className="btn btn-primary" onClick={this.onSaveClick}>Save</button>
           <button className="btn btn-default" onClick={this.onCancelClick}>Cancel</button>
         </div>
-        <div className="page-title-bar">
-          <input defaultValue={title} placeholder="Enter page title" refs="page_title" />
+        <div className="page-title-bar" ref="page_title">
+          <input defaultValue={title} placeholder="Enter page title" />
         </div>
-        <div className="page-content">
+        <div className="page-content" ref="page_content">
           <textarea defaultValue={content}></textarea>
         </div>
       </div>
