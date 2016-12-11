@@ -14,7 +14,7 @@ class UsernameModal extends Component {
     let { onSetUsername } = this.props;
     let usernameBox = $(findDOMNode(this.refs.username));
     let username = usernameBox.find('input').val();
-    
+
     if (!username || username.length === 0){
       alert("Invalid username!");
     } else {
@@ -29,10 +29,9 @@ class UsernameModal extends Component {
       <div>
         <Modal show={showModal} onHide={this.closeModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Set Username</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Set Username</h4>
             <div ref="username">
               <input type="text" defaultValue={username} />
             </div>

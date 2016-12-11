@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
+import { getBackends } from './data/general/backend';
 import { listPages, getPages, updatePage } from './data/wiki/pages';
 import { formatPages } from './utils/page';
 
+import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
 import Throbber from './components/general/Throbber';
@@ -17,7 +19,8 @@ class App extends Component {
     let username = localStorage.getItem(USERNAME_KEY);
 
     this.state = {
-      currentBackend: '',
+      currentBackendName: '',
+      backends: [],
       currentPage: {},
       pages: [],
       username: username,
@@ -36,6 +39,9 @@ class App extends Component {
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
     this.closeUsernameModal = this.closeUsernameModal.bind(this);
     this.onSetUsername = this.onSetUsername.bind(this);
+
+    this.onSelectBackend = this.onSelectBackend.bind(this);
+
   }
 
   promptForUsername(){
@@ -54,7 +60,33 @@ class App extends Component {
 
   componentDidMount(){
     this.loadUsername();
-    this.loadPageList();
+    this.loadPageList('');
+
+    let that = this;
+
+    getBackends().then( (response) => {
+      let backendName = '';
+      let backends = response.body;
+      if (backends.length > 0) {
+        let backendNames = backends.map(bk => bk.Name);
+
+        backendName = backendNames[0];
+        if (backendNames.indexOf("default") > -1) {
+          backendName = "default";
+        }
+
+        console.log("Setting currentBackendName to:", backendName);
+
+        this.setState({
+          currentBackendName: backendName,
+          backends: backends
+        })
+      }
+
+      that.loadPageList(backendName);
+    }, (respErr) => {
+      console.log("Error fetching backends: " + respErr);
+    });
   }
 
   // function called initial load that fetches pages from backend.
@@ -62,9 +94,8 @@ class App extends Component {
   // if used outside of initial load (say, for polling) we need to 
   // update the logic since we don't want to clobber existing 
   // currentPage
-  loadPageList(){
+  loadPageList(backend){
     // TODO: Get pages from all Backends, not just the current/default
-    let backend = this.state.currentBackend;
     console.log('backend');
     console.log(backend);
 
@@ -82,17 +113,25 @@ class App extends Component {
 
     }, (respErr) => {
       console.log("Error loading page list: " + respErr);
+
+      // Would probably be better to revert to previous backend and
+      // continue showing its pages list, but this is a quick fix that
+      // keeps the selected backend and the pages list in sync
+      this.setState({
+        pages: []
+      });
     });
   }
 
   loadPageByKey(pageKey){
     this.setState({'isLoading': true });
     // TODO: Get pages from all Backends, not just the current/default
-    let backend = this.state.currentBackend;
+    let backend = this.state.currentBackendName;
     getPages(backend, [pageKey]).then( (response) => {
       let pages = formatPages(response.body);
       if (pages.length === 0) {
-        console.log("Error fetching row with ID tag", pageKey, "from Backend", backend);
+        console.log("Error fetching row with ID tag", pageKey, "from Backend",
+                    backend);
         return;
       }
 
@@ -122,7 +161,7 @@ class App extends Component {
 
     // is this correct syntax for passing along all func args
     // with spread operator + backend?
-    updatePage(...arguments, this.state.currentBackend)
+    updatePage(...arguments, this.state.currentBackendName)
       .then((response) => {
         console.log(response.body);
         // TODO: response returns new page object?
@@ -164,8 +203,20 @@ class App extends Component {
     this.closeUsernameModal();
   }
 
+  onSelectBackend(newBackendName){
+    // TODO: stop setInterval for long-polling document list, start
+    // new setInterval
+    console.log("Changing Backend from", this.state.currentBackendName, "to",
+                newBackendName);
+    this.setState({
+      currentBackendName: newBackendName
+    })
+    this.loadPageList(newBackendName);
+  }
+
   render(){
     let { pages, currentPage, username, isLoading, isEditing, showUsernameModal } = this.state;
+    let { backends, currentBackendName } = this.state;
 
     return (
       <main>
@@ -178,6 +229,14 @@ class App extends Component {
                                 showModal={showUsernameModal}
                                 onSetUsername={this.onSetUsername}
                                 closeModal={this.closeUsernameModal} />}
+
+        <div className="backend-container">
+          <h3>Backends</h3>
+          <DropdownList
+            data={backends.map(bk => bk.Name)}
+            value={currentBackendName}
+            onChange={this.onSelectBackend} />
+        </div>
 
         <WikiPageList
           pages={pages}

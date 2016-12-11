@@ -46,6 +46,7 @@
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.1.0",
     "react-markdown": "^2.4.2",
+    "react-widgets": "^3.4.5",
     "superagent": "^2.0.0",
     "superagent-prefix": "^0.0.2",
     "utf8": "^2.1.1"
