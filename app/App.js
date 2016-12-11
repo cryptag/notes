@@ -227,7 +227,7 @@ class App extends Component {
     return (
       <div>
         <div className="side-content">
-          <h1>CryptWiki</h1>
+          <h1>CryptTag Notes&nbsp;<i className="fa fa-user-secret"></i></h1>
           <hr/>
           <div>
             <strong>
