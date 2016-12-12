@@ -122,8 +122,14 @@ class App extends Component {
       // Would probably be better to revert to previous backend and
       // continue showing its pages list, but this is a quick fix that
       // keeps the selected backend and the pages list in sync
+
+      // if no pages, bring up edit form and encourage to create a 
+      // first page
       this.setState({
-        pages: []
+        currentPage: {},
+        pages: [],
+        isLoading: false,
+        isEditing: true
       });
     });
   }
@@ -225,16 +231,14 @@ class App extends Component {
     return (
       <div>
         <div className="side-content">
-          <h1>CrypTag Notes&nbsp;<i className="fa fa-user-secret"></i></h1>
+          <h1>CrypTag Notes&nbsp;<i className="fa fa-handshake-o"></i></h1>
           <hr/>
           <div>
-            <strong>
-              <i className="fa fa-user-circle-o"></i>&nbsp;
-              Welcome, {username}!
-            </strong>
-            <button className="btn btn-link btn-sm" onClick={this.onSetUsernameClick}>
-              <i className="fa fa-pencil-square-o"></i>
-            </button>
+            <i className="fa fa-user-circle-o"></i>&nbsp;
+              {username}
+              <button className="btn btn-link btn-sm" onClick={this.onSetUsernameClick}>
+                <i className="fa fa-pencil-square-o"></i>
+              </button>
           </div>
           {showUsernameModal && <UsernameModal 
                                   username={username}

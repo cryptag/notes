@@ -34,8 +34,8 @@ main {
 .form-group {
   label {
     text-transform: uppercase;
-    color: #666;
-    font-size: 12px;
+    color: #333;
+    font-size: 16px;
   }
 
   .form-control {
@@ -45,7 +45,7 @@ main {
 
 .btn-primary {
   background-color: #978de3;
-  border: solid 1px #1e202f;
+  border: solid 1px #ccc;
 }
 
 .btn-primary:hover {
@@ -67,6 +67,11 @@ main {
   .btn-link {
     font-weight: bold;
     color: white;
+  }
+
+  .edit-link {
+    text-decoration: underline;
+    text-decoration-style: dashed;
   }
 }
 

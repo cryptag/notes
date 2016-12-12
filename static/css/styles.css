@@ -24,15 +24,15 @@ main {
 
 .form-group label {
   text-transform: uppercase;
-  color: #666;
-  font-size: 12px; }
+  color: #333;
+  font-size: 16px; }
 
 .form-group .form-control {
   width: 100%; }
 
 .btn-primary {
   background-color: #978de3;
-  border: solid 1px #1e202f; }
+  border: solid 1px #ccc; }
 
 .btn-primary:hover {
   background-color: #1e202f; }
@@ -50,6 +50,9 @@ main {
   .side-content .btn-link {
     font-weight: bold;
     color: white; }
+  .side-content .edit-link {
+    text-decoration: underline;
+    text-decoration-style: dashed; }
 
 .main-content {
   width: 80%;
