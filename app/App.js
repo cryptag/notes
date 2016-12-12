@@ -164,8 +164,6 @@ class App extends Component {
     console.log('saving!');
     console.log(pageKey);
 
-    // is this correct syntax for passing along all func args
-    // with spread operator + backend?
     updatePage(pageKey, pageTitle, pageContent, this.state.currentBackendName)
       .then((response) => {
         console.log(response.body);
@@ -227,7 +225,7 @@ class App extends Component {
     return (
       <div>
         <div className="side-content">
-          <h1>CryptTag Notes&nbsp;<i className="fa fa-user-secret"></i></h1>
+          <h1>CrypTag Notes&nbsp;<i className="fa fa-user-secret"></i></h1>
           <hr/>
           <div>
             <strong>
