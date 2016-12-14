@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import MarkdownRenderer from 'react-markdown-renderer';
+import ReactMarkdown from 'react-markdown';
 
 const utf8 = require('utf8');
 const atob = require('atob');
@@ -36,7 +36,7 @@ class WikiPage extends Component {
         </div>
         <hr/>
         <div className="page-content">
-          <MarkdownRenderer markdown={content} />
+          <ReactMarkdown source={content} />
         </div>
       </div>
     );
