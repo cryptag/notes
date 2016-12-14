@@ -36,6 +36,10 @@ class WikiPageEdit extends Component {
     let title = page.title || "";
     let content = page.contents || "";
 
+    // TODO: Eventually make title editable, but for now it isn't, so
+    // let's not mislead the user
+    let readOnly = title ? "true" : "false";
+
     return (
       <div className="wiki-page wiki-page-edit">
         <form>
@@ -45,7 +49,7 @@ class WikiPageEdit extends Component {
           </div>
           <div className="form-group page-title-bar" ref="page_title">
             <label>Page Title</label>
-            <input className="form-control" defaultValue={title} placeholder="Enter page title" />
+            <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} />
           </div>
           <Nav bsStyle="tabs" activeKey="1" onSelect={this.onChangeEditMode}>
             <NavItem eventKey="1">Edit</NavItem>
