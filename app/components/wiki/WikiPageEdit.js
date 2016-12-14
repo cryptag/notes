@@ -38,7 +38,7 @@ class WikiPageEdit extends Component {
 
     // TODO: Eventually make title editable, but for now it isn't, so
     // let's not mislead the user
-    let readOnly = title ? "true" : "false";
+    let readOnly = page.key ? true : false;
 
     return (
       <div className="wiki-page wiki-page-edit">
