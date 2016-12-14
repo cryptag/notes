@@ -1,4 +1,4 @@
-import { tagByPrefix, tagByPrefixStripped, sortRowByCreated } from './tags';
+import { tagByPrefix, tagByPrefixStripped, sortRowByCreatedDescending } from './tags';
 
 export function formatPages(rawPages){
   let pages = rawPages.map(row => {
@@ -9,5 +9,5 @@ export function formatPages(rawPages){
       tags: row.plaintags
     }
   });
-  return pages.sort(sortRowByCreated);
+  return pages.sort(sortRowByCreatedDescending);
 }

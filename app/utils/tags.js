@@ -45,6 +45,13 @@ export function sortRowByCreated(row, nextRow){
   return date.localeCompare(next);
 }
 
+export function sortRowByCreatedDescending(row, nextRow){
+  let date = tagByPrefix(row.tags || row.plaintags, 'created:');
+  let next = tagByPrefix(nextRow.tags || nextRow.plaintags, 'created:');
+
+  return next.localeCompare(date);
+}
+
 export function parseJSON(str){
   return JSON.parse(utf8.decode(atob(str.unencrypted)));
 }
