@@ -3,9 +3,6 @@ import { findDOMNode } from 'react-dom';
 
 import { Nav, NavItem, MenuItem, NavDropdown } from 'react-bootstrap';
 
-const utf8 = require('utf8');
-const atob = require('atob');
-
 class WikiPageEdit extends Component {
   constructor(){
     super(...arguments);
@@ -38,7 +35,6 @@ class WikiPageEdit extends Component {
     let { page } = this.props;
     let title = page.title || "";
     let content = page.contents || "";
-    content = utf8.decode(atob(content));
 
     return (
       <div className="wiki-page wiki-page-edit">

@@ -21,7 +21,6 @@ class WikiPage extends Component {
     let { page } = this.props;
     let title = page.title || "untitled";
     let content = page.contents || "";
-    content = utf8.decode(atob(content));
 
     console.log("Rendering WikiPage...");
 

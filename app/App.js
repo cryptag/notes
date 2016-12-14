@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { getBackends } from './data/general/backend';
 import { listPages, getPages, updatePage } from './data/wiki/pages';
-import { formatPages } from './utils/page';
+import { formatPages, formatPage } from './utils/page';
 
 import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
@@ -188,13 +188,13 @@ class App extends Component {
 
     updatePage(pageKey, pageTitle, pageContent, this.state.currentBackendName)
       .then((response) => {
-        console.log(response.body);
-        // TODO: response returns new page object?
-        // format the contents and then 
-        // make that the currentPage in state
+        let newPage = formatPage(response.body);
+        newPage.contents = pageContent;
 
         this.setState({
-          isEditing: false
+          isEditing: false,
+          currentPage: newPage,
+          pages: [newPage].concat(this.state.pages)
         });
       },
       (respErr) => {
