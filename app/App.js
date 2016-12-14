@@ -8,9 +8,11 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
 import Throbber from './components/general/Throbber';
+import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
 
 const USERNAME_KEY = 'username';
+const BACKEND_KEY = 'current_backend';
 
 class App extends Component {
   constructor(){
@@ -26,7 +28,9 @@ class App extends Component {
       username: username,
       showUsernameModal: false,
       isLoading: true,
-      isEditing: false
+      isEditing: false,
+      showAlert: true,
+      alertMessage: 'Welcome to CrypTag'
     };
 
     this.loadPageList = this.loadPageList.bind(this);
@@ -42,6 +46,9 @@ class App extends Component {
     this.onSetUsername = this.onSetUsername.bind(this);
 
     this.onSelectBackend = this.onSelectBackend.bind(this);
+    this.onSetBackend = this.onSetBackend.bind(this);
+
+    this.onHideAlert = this.onHideAlert.bind(this);
 
   }
 
@@ -61,37 +68,46 @@ class App extends Component {
 
   componentDidMount(){
     this.loadUsername();
-    this.loadPageList('');
     this.loadBackends();
     
   }
 
+  // failure case #1: what if backends don't load?
+  // UI?
   loadBackends(){
-    let that = this;
-
     getBackends().then( (response) => {
-      let backendName = '';
+      let backendName = localStorage.getItem(BACKEND_KEY);
       let backends = response.body;
       if (backends.length > 0) {
         let backendNames = backends.map(bk => bk.Name);
 
-        backendName = backendNames[0];
-        if (backendNames.indexOf("default") > -1) {
-          backendName = "default";
+        if (!backendName){
+          backendName = backendNames[0];
+          
+          if (backendNames.indexOf("default") > -1) {
+            backendName = "default";
+          }
         }
 
         console.log("Setting currentBackendName to: ", backendName);
 
         this.setState({
-          currentBackendName: backendName,
           backends: backends
-        })
+        });
+        this.onSetBackend(backendName);
       }
 
-      that.loadPageList(backendName);
     }, (respErr) => {
       console.log("Error fetching backends: " + respErr);
     });
+  }
+
+  onSetBackend(backendName){
+    localStorage.setItem(BACKEND_KEY, backendName);
+    this.setState({
+      currentBackendName: backendName
+    });
+    this.loadPageList(backendName);
   }
 
   // function called initial load that fetches pages from backend.
@@ -124,12 +140,11 @@ class App extends Component {
       // keeps the selected backend and the pages list in sync
 
       // if no pages, bring up edit form and encourage to create a 
-      // first page
+      // first page ?
       this.setState({
         currentPage: {},
         pages: [],
-        isLoading: false,
-        isEditing: true
+        isLoading: false
       });
     });
   }
@@ -217,19 +232,31 @@ class App extends Component {
     // new setInterval
     console.log("Changing Backend from", this.state.currentBackendName, "to",
                 newBackendName);
+    this.onSetBackend(newBackendName);
+  }
+
+  onHideAlert(){
     this.setState({
-      currentBackendName: newBackendName
-    })
-    this.loadPageList(newBackendName);
+      showAlert: false
+    });
   }
 
   render(){
     let { pages, currentPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
+    let { alertMessage, alertStyle, showAlert} = this.state;
+    let autodismiss = true;
 
     return (
       <div>
+        <AlertContainer
+          message={alertMessage}
+          alertStyle={alertStyle}
+          showAlert={showAlert}
+          autodismiss={autodismiss}
+          onHideAlert={this.onHideAlert} />
+
         <div className="side-content">
           <h1>CrypTag Notes&nbsp;<i className="fa fa-handshake-o"></i></h1>
           <hr/>

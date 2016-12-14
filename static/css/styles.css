@@ -66,6 +66,11 @@ main {
     height: 500px;
     width: 800px; }
 
+.alert-container {
+  position: fixed;
+  top: 0;
+  width: 100%; }
+
 ul {
   list-style: none; }
 

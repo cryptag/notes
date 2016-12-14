@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 
-import ReactMarkdown from 'react-markdown';
+import { Nav, NavItem, MenuItem, NavDropdown } from 'react-bootstrap';
 
 const utf8 = require('utf8');
 const atob = require('atob');
-
 
 class WikiPageEdit extends Component {
   constructor(){
@@ -13,6 +12,7 @@ class WikiPageEdit extends Component {
 
     this.onSaveClick = this.onSaveClick.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
+    this.onChangeEditMode = this.onChangeEditMode.bind(this);
   }
 
   onSaveClick(e){
@@ -28,6 +28,10 @@ class WikiPageEdit extends Component {
     e.preventDefault();
     this.props.onCancelUpdate();
     return false;
+  }
+
+  onChangeEditMode(eventKey){
+    console.log(eventKey);
   }
 
   render(){
@@ -47,6 +51,10 @@ class WikiPageEdit extends Component {
             <label>Page Title</label>
             <input className="form-control" defaultValue={title} placeholder="Enter page title" />
           </div>
+          <Nav bsStyle="tabs" activeKey="1" onSelect={this.onChangeEditMode}>
+            <NavItem eventKey="1">Edit</NavItem>
+            <NavItem eventKey="2">Preview</NavItem>
+          </Nav>
           <div className="form-group page-content" ref="page_content">
             <label>Content</label>
             <textarea className="form-control" defaultValue={content}></textarea>
