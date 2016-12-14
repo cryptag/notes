@@ -23,6 +23,8 @@ class WikiPage extends Component {
     let content = page.contents || "";
     content = utf8.decode(atob(content));
 
+    console.log("Rendering WikiPage...");
+
     return (
       <div className="wiki-page">
         <div className="toolbar">
