@@ -1,4 +1,8 @@
-# CryptWiki
+# CrypTag Notes
+
+![](https://tryingtobeawesome.com/files/screenshot-cryptag-notes-viewmode.png)
+
+![](https://tryingtobeawesome.com/files/screenshot-cryptag-notes-editmode.png)
 
 This is a desktop app made with electron and React.js that talks to a
 local server/API/daemon `cryptagd` which is provided by
@@ -34,7 +38,7 @@ to store and fetch tasks at the command line, simply run
 
 ### cryptagd
 
-Install the local daemon `cryptagd` that CryptWiki talks to:
+Install the local daemon `cryptagd` that CrypTag Notes talks to:
 
     $ go get github.com/cryptag/cryptag/servers/cryptagd
 
@@ -42,7 +46,7 @@ Run it in one terminal with
 
     $ cryptagd
 
-meanwhile, in another terminal, run CryptWiki (see next section).
+meanwhile, in another terminal, run CrypTag Notes (see next section).
 
 ## Installation and Running
 
