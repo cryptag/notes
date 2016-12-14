@@ -1,4 +1,8 @@
-# CryptWiki
+# CrypTag Notes
+
+![](https://tryingtobeawesome.com/files/screenshot-cryptag-notes-viewmode.png)
+
+![](https://tryingtobeawesome.com/files/screenshot-cryptag-notes-editmode.png)
 
 This is a desktop app made with electron and React.js that talks to a
 local server/API/daemon `cryptagd` which is provided by
@@ -6,35 +10,43 @@ local server/API/daemon `cryptagd` which is provided by
 
 ## Pre-requisites
 
-Install `cryptask-sandstorm` to create and store tasks and store them
-in [Sandstorm](https://sandstorm.io/) (once you install
-[the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
-).
+Install the `cryptag` command line tool.
 
-### cryptask-sandstorm
 
-Make sure you have Go installed, then run:
+### cryptag
 
-    $ go get github.com/cryptag/cryptag/cmd/cryptask-sandstorm
-    $ cryptask-sandstorm init <sandstorm_webkey>
+Make sure you have Go installed and `$GOPATH` set.  Then run:
 
-To generate a Sandstorm webkey,
-[install this](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0)
-then _click the key icon_ near the top of your screen.
+    $ go get github.com/cryptag/cryptag/cmd/cryptag
 
-If someone else gave you the Sandstorm webkey along with the decrypt
-key needed to access the tasks s/he is sharing with you, also run
+If you'd like to securely store your notes in a local folder, create a
+local filesystem Backend called "notes" and make it the default like
+this:
 
-    $ cryptask-sandstorm setkey <key>
+    $ cryptag init filesystem notes ~/.cryptag/backends/notes
+    $ cryptag setdefaultbackend notes
 
-For more on getting started with `cryptask-sandstorm`, including how
-to store and fetch tasks at the command line, simply run
+Or, if you'd like to securely store your notes in Sandstorm, [install the CrypTag Sandstorm app](https://apps.sandstorm.io/app/mkq3a9jyu6tqvzf7ayqwg620q95p438ajs02j0yx50w2aav4zra0),
+_click the key icon_ near the top of your screen to generate a web key, then run:
 
-    $ cryptask-sandstorm
+    $ cryptag init sandstorm notes <sandstorm_web_key>
+    $ cryptag setdefaultbackend notes
+
+If someone else gave you the Sandstorm webkey _and the decryption key_
+needed to access the notes (and perhaps other data) that s/he is
+sharing with you, also run:
+
+    $ cryptag -b notes setkey <key>
+
+For more on getting started with `cryptag`, including how to store and
+fetch files and other data at the command line, simply run
+
+    $ cryptag
+
 
 ### cryptagd
 
-Install the local daemon `cryptagd` that CryptWiki talks to:
+Install the local daemon `cryptagd` that CrypTag Notes talks to:
 
     $ go get github.com/cryptag/cryptag/servers/cryptagd
 
@@ -42,7 +54,8 @@ Run it in one terminal with
 
     $ cryptagd
 
-meanwhile, in another terminal, run CryptWiki (see next section).
+Meanwhile, in another terminal, run CrypTag Notes (see next section).
+
 
 ## Installation and Running
 
@@ -59,6 +72,7 @@ You should also install gulp as a global tool on your system:
 then
 
 ``` $ npm start ```
+
 
 ## Development
 
@@ -77,6 +91,7 @@ In order to add any new bower libraries to the HTML files:
 
 ``` $ gulp inject ```
 
+
 ## Testing
 
 There are some placeholder tests included here that test the rendering of the individual components
@@ -92,8 +107,10 @@ If you're on Linux, instead run:
 
 ``` $ npm test ```
 
+
 ## Thank Yous
 
 _Major_ thanks to [@jimmcgaw](https://github.com/jimmcgaw) for writing
 the foundations to this app, which began as a clone of
-[jimmcgaw/cpassui@d072b0f](https://github.com/jimmcgaw/cpassui/commit/d072b0fa8d9c2442a094cae98bf2acafb28154f3).
+[jimmcgaw/cpassui@d072b0f](https://github.com/jimmcgaw/cpassui/commit/d072b0fa8d9c2442a094cae98bf2acafb28154f3),
+and for his many contributions since!
