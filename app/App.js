@@ -198,7 +198,7 @@ class App extends Component {
         });
       },
       (respErr) => {
-        console.log("Error saving page: " + pageKey);
+        console.log("Error saving page with ID-tag", pageKey, ";", respErr);
       });
   }
 
