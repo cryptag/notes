@@ -99,6 +99,7 @@ class App extends Component {
 
     }, (respErr) => {
       console.log("Error fetching backends: " + respErr);
+      this.loadPageList('');
     });
   }
 
@@ -232,6 +233,7 @@ class App extends Component {
     // new setInterval
     console.log("Changing Backend from", this.state.currentBackendName, "to",
                 newBackendName);
+    this.setState({ isLoading: true })
     this.onSetBackend(newBackendName);
   }
 

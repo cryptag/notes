@@ -13,7 +13,7 @@ class AlertContainer extends Component {
   onAlertDismiss(e){
     let alertContainer = $(findDOMNode(this.refs.alert_container));
     let { onHideAlert } = this.props;
-    debugger
+    
     alertContainer.slideUp({
       'duration': 400,
       'complete': onHideAlert
