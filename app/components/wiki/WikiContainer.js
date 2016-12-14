@@ -12,12 +12,12 @@ class WikiContainer extends Component {
   }
 
   render(){
-    let { page, isEditing, onEditPage, onUpdatePage, onCancelUpdate } = this.props;
+    let { page, isEditing, onEditPage, onUpdatePage, onCancelUpdate, onCreatePage } = this.props;
 
     return (
       <div>
         {!isEditing && <WikiPage page={page} onEditPage={onEditPage} />}
-        {isEditing && <WikiPageEdit page={page} onUpdatePage={onUpdatePage} onCancelUpdate={onCancelUpdate} />}
+        {isEditing && <WikiPageEdit page={page} onUpdatePage={onUpdatePage} onCancelUpdate={onCancelUpdate} onCreatePage={onCreatePage} />}
       </div>
     );
   }

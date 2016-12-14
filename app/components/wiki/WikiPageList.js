@@ -5,12 +5,14 @@ import WikiPageLink from './WikiPageLink';
 class WikiPageList extends Component {
 
   render(){
-    let { pages, loadPageByKey } = this.props;
+    let { pages, loadPageByKey, onBlankPageClick } = this.props;
 
     return (
       <div className="pages">
-        <h3>Pages</h3>
-
+        <div className="row">
+          <h3 className="pull-left">Pages</h3>
+          <button className="btn btn-primary pull-right" onClick={onBlankPageClick}>+</button>
+        </div>
         <ul>
           {pages.map( (page) => {
             return (

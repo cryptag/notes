@@ -14,10 +14,19 @@ class WikiPageEdit extends Component {
 
   onSaveClick(e){
     e.preventDefault();
-    let { onUpdatePage, page } = this.props;
+    let { onUpdatePage, onCreatePage, page } = this.props;
     let title = $(findDOMNode(this.refs.page_title)).find('input').val();
     let content = $(findDOMNode(this.refs.page_content)).find('textarea').val();;
-    onUpdatePage(page.key, title, content);
+
+    if (page.key) {
+      // Page already exists, and we're updating it
+      onUpdatePage(page.key, title, content);
+    } else {
+      let tags = [];
+      // TODO: Allow user to set custom tags
+      onCreatePage(title, content, tags);
+    }
+
     return false;
   }
 

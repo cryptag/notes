@@ -17,8 +17,9 @@ export function getPages(backendName, tags=[]){
   return reqPost('/rows/get', {"plaintags": plaintags}, backendName);
 }
 
-export function createPage(title, contents, backendName){
+export function createPage(title, contents, tags, backendName){
   let row = pageToPost(title, contents);
+  row.plaintags = row.plaintags.concat(tags);
   return reqPost('/rows', row, backendName);
 }
 

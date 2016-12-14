@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { getBackends } from './data/general/backend';
-import { listPages, getPages, updatePage } from './data/wiki/pages';
+import { listPages, getPages, updatePage, createPage } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
 
 import DropdownList from 'react-widgets/lib/DropdownList';
@@ -30,7 +30,7 @@ class App extends Component {
       isLoading: true,
       isEditing: false,
       showAlert: true,
-      alertMessage: 'Welcome to CrypTag'
+      alertMessage: 'Welcome to CrypTag Notes!'
     };
 
     this.loadPageList = this.loadPageList.bind(this);
@@ -38,8 +38,10 @@ class App extends Component {
     this.loadBackends = this.loadBackends.bind(this);
 
     this.onEditPage = this.onEditPage.bind(this);
+    this.onCreatePage = this.onCreatePage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
+    this.onBlankPageClick = this.onBlankPageClick.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
     this.onCloseUsernameModal = this.onCloseUsernameModal.bind(this);
@@ -69,7 +71,7 @@ class App extends Component {
   componentDidMount(){
     this.loadUsername();
     this.loadBackends();
-    
+    this.setState({isEditing: true});
   }
 
   // failure case #1: what if backends don't load?
@@ -111,11 +113,6 @@ class App extends Component {
     this.loadPageList(backendName);
   }
 
-  // function called initial load that fetches pages from backend.
-  // it sets the currentPage.
-  // if used outside of initial load (say, for polling) we need to 
-  // update the logic since we don't want to clobber existing 
-  // currentPage
   loadPageList(backend){
     // TODO: Get pages from all Backends, not just the current/default
     console.log('backend');
@@ -128,11 +125,6 @@ class App extends Component {
         pages: pages,
         isLoading: false
       });
-
-      if (pages.length > 0){
-        this.loadPageByKey(pages[0].key)
-      }
-
     }, (respErr) => {
       console.log("Error loading page list: " + respErr);
 
@@ -151,7 +143,10 @@ class App extends Component {
   }
 
   loadPageByKey(pageKey){
-    this.setState({'isLoading': true });
+    this.setState({
+      isLoading: true,
+      isEditing: false
+    });
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackendName;
     getPages(backend, [pageKey]).then( (response) => {
@@ -182,6 +177,32 @@ class App extends Component {
     });
   }
 
+  onCreatePage(pageTitle, pageContent, pageTags){
+    console.log('Creating new page with title:', pageTitle);
+
+    let backend = this.state.currentBackendName;
+
+    createPage(pageTitle, pageContent, pageTags, backend)
+      .then((response) => {
+        let newPage = formatPage(response.body);
+
+        // cryptagd responds with the plaintags but not the contents
+        // (since it could theoretically be huge, the server never
+        // does any processing, and whoever's uploading it obviously
+        // already has it), so use the local pageContent
+        newPage.contents = pageContent;
+
+        this.setState({
+          isEditing: false,
+          currentPage: newPage,
+          pages: [newPage].concat(this.state.pages)
+        });
+      },
+      (respErr) => {
+        console.log("Error creating new page with title", pageTitle, ";", respErr);
+      });
+  }
+
   onUpdatePage(pageKey, pageTitle, pageContent){
     console.log('saving!');
     console.log(pageKey);
@@ -198,8 +219,18 @@ class App extends Component {
         });
       },
       (respErr) => {
-        console.log("Error saving page with ID-tag", pageKey, ";", respErr);
+        console.log("Error updating page with ID-tag", pageKey, ";", respErr);
       });
+  }
+
+  onBlankPageClick(){
+    // TODO: If current document has been changed in the DOM since
+    // loading, don't clobber that state
+
+    this.setState({
+      currentPage: {},
+      isEditing: true
+    })
   }
 
   onCancelUpdate(){
@@ -229,6 +260,9 @@ class App extends Component {
   }
 
   onSelectBackend(newBackendName){
+    // TODO: Don't let user do this if they've made changes to the
+    // current page
+
     // TODO: stop setInterval for long-polling document list, start
     // new setInterval
     console.log("Changing Backend from", this.state.currentBackendName, "to",
@@ -286,6 +320,7 @@ class App extends Component {
           <WikiPageList
             pages={pages}
             loadPageByKey={this.loadPageByKey}
+            onBlankPageClick={this.onBlankPageClick}
             page={currentPage} />
 
         </div>
@@ -299,6 +334,7 @@ class App extends Component {
                                 isEditing={isEditing}
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
+                                onCreatePage={this.onCreatePage}
                                 onUpdatePage={this.onUpdatePage}/>}
             </div>
           </main>
