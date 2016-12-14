@@ -1,5 +1,8 @@
-import { reqPost } from '../api';
+import { reqPost, reqPut } from '../api';
 import { encodeObjForPost } from '../../utils/tags';
+
+const utf8 = require('utf8');
+const btoa = require('btoa');
 
 
 export function listPages(backendName){
@@ -14,15 +17,6 @@ export function getPages(backendName, tags=[]){
   return reqPost('/rows/get', {"plaintags": plaintags}, backendName);
 }
 
-export function createEmptyPage(backendName, parentRow, title){
-  let row = {
-    unencrypted: null,
-    plaintags: [`title:${title}`, 'type:wikipage', 'app:cryptagnotes',
-                'parentrow:'+parentRow]
-  }
-  return reqPost('/rows', row, backendName);
-}
-
 export function createPage(title, contents, backendName){
   let row = pageToPost(title, contents);
   return reqPost('/rows', row, backendName);
@@ -30,15 +24,22 @@ export function createPage(title, contents, backendName){
 
 function pageToPost(title, contents){
   return {
-    unencrypted: contents,
+    unencrypted: btoa(utf8.encode(contents)),
     plaintags: ['type:text', 'type:md', 'app:cryptagnotes', `title:${title}`]
+  }
+}
+
+function pageToPut(pageKey, title, contents){
+  // TODO: Acknowledge new title
+  return {
+    unencrypted: btoa(utf8.encode(contents)),
+    old_version_id_tag: pageKey
   }
 }
 
 // Create, Update
 
 export function updatePage(pageKey, title, contents, backendName){
-  let row = pageToPost(title, contents);
-  row.plaintags.push("parentrow:" + pageKey);
-  return reqPost('/rows', row, backendName);
+  let row = pageToPut(pageKey, title, contents);
+  return reqPut('/rows', row, backendName);
 }
