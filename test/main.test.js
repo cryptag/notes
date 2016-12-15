@@ -2,9 +2,9 @@ var Application = require('spectron').Application;
 var assert = require('assert');
 import { expect } from 'chai';
 
-var filename = 'CryptWiki-darwin-x64/CryptWiki.app/Contents/MacOS/CryptWiki'
+var filename = 'CrypTag_Notes-darwin-x64/CrypTag_Notes.app/Contents/MacOS/CrypTag_Notes'
 if (process.platform === 'linux'){
-  filename = 'CryptWiki-linux-x64/CryptWiki';
+  filename = 'CrypTag_Notes-linux-x64/CrypTag_Notes';
 }
 
 describe('application launch', function () {
@@ -31,7 +31,7 @@ describe('application launch', function () {
   //     return this.app.client.getTitle();
   //   })
   //   .then((title) => {
-  //     expect(title).to.equal('CryptWiki');
+  //     expect(title).to.equal('CrypTag_Notes');
   //   });
   //
   // });

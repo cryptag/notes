@@ -1,17 +1,17 @@
 {
-  "name": "cryptwiki",
-  "description": "Collaborative wiki app",
+  "name": "cryptag-notes",
+  "description": "Secure note-taking and collaborative wiki page editing app",
   "main": "main.js",
   "authors": [
     "jimmcgaw <jpmcgaw@gmail.com>",
     "Steve Phillips <steve@tryingtobeawesome.com>"
   ],
-  "license": "IST",
+  "license": "AGPLv3",
   "keywords": [
     "CrypTag",
-    "CryptWiki"
+    "CrypTag Notes"
   ],
-  "homepage": "https://github.com/cryptag/cryptwiki",
+  "homepage": "https://github.com/cryptag/notes",
   "ignore": [
     "**/.*",
     "node_modules",

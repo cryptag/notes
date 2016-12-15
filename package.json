@@ -1,23 +1,23 @@
 {
-  "name": "cryptwiki",
-  "version": "0.1.0",
-  "description": "Collaborative wiki app",
+  "name": "cryptag-notes",
+  "version": "0.8.0",
+  "description": "Secure note-taking and collaborative wiki page editing app",
   "main": "main.js",
   "bugs": {
-    "url": "https://github.com/cryptag/cryptwiki/issues"
+    "url": "https://github.com/cryptag/notes/issues"
   },
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
-    "build": "electron-packager ./ CryptWiki --platform=darwin --arch=x64 --overwrite",
-    "build-linux": "electron-packager ./ CryptWiki --platform=linux --arch=x64 --overwrite",
+    "build": "electron-packager ./ CrypTag_Notes --platform=darwin --arch=x64 --overwrite",
+    "build-linux": "electron-packager ./ CrypTag_Notes --platform=linux --arch=x64 --overwrite",
     "test": "node_modules/.bin/mocha test/.setup.js test/**/*.test.js"
   },
   "keywords": [
     "CrypTag",
-    "CryptWiki"
+    "CrypTag Notes"
   ],
   "author": "",
-  "license": "IST",
+  "license": "AGPLv3",
   "devDependencies": {
     "atob": "^2.0.3",
     "babel-cli": "^6.10.1",
