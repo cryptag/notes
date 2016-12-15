@@ -12,12 +12,20 @@ class WikiContainer extends Component {
   }
 
   render(){
-    let { page, isEditing, onEditPage, onUpdatePage, onCancelUpdate, onCreatePage } = this.props;
+    let { page, shadowPage, onUpdateShadowPage, isEditing, onEditPage, onUpdatePage, onCancelUpdate, onCreatePage } = this.props;
+    let { isPreviewMode, onTogglePreviewMode } = this.props;
 
     return (
       <div>
         {!isEditing && <WikiPage page={page} onEditPage={onEditPage} />}
-        {isEditing && <WikiPageEdit page={page} onUpdatePage={onUpdatePage} onCancelUpdate={onCancelUpdate} onCreatePage={onCreatePage} />}
+        {isEditing && <WikiPageEdit page={page}
+                        shadowPage={shadowPage}
+                        isPreviewMode={isPreviewMode}
+                        onTogglePreviewMode={onTogglePreviewMode}
+                        onUpdateShadowPage={onUpdateShadowPage}
+                        onUpdatePage={onUpdatePage}
+                        onCancelUpdate={onCancelUpdate}
+                        onCreatePage={onCreatePage} />}
       </div>
     );
   }
@@ -25,6 +33,10 @@ class WikiContainer extends Component {
 
 WikiContainer.propTypes = {
   page: PropTypes.object.isRequired,
+  shadowPage: PropTypes.object.isRequired,
+  onUpdateShadowPage: PropTypes.func.isRequired,
+  isPreviewMode: PropTypes.bool.isRequired,
+  onTogglePreviewMode: PropTypes.func.isRequired,
   onEditPage: PropTypes.func.isRequired,
   onUpdatePage: PropTypes.func.isRequired,
   onCancelUpdate: PropTypes.func.isRequired,

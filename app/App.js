@@ -30,7 +30,9 @@ class App extends Component {
       isLoading: true,
       isEditing: false,
       showAlert: true,
-      alertMessage: 'Welcome to CrypTag Notes!'
+      alertMessage: 'Welcome to CrypTag Notes!',
+      shadowPage: {},
+      isPreviewMode: false
     };
 
     this.loadPageList = this.loadPageList.bind(this);
@@ -49,8 +51,11 @@ class App extends Component {
 
     this.onSelectBackend = this.onSelectBackend.bind(this);
     this.onSetBackend = this.onSetBackend.bind(this);
+    this.onUpdateShadowPage = this.onUpdateShadowPage.bind(this);
 
     this.onHideAlert = this.onHideAlert.bind(this);
+
+    this.onTogglePreviewMode = this.onTogglePreviewMode.bind(this);
 
   }
 
@@ -180,8 +185,10 @@ class App extends Component {
 
   onEditPage(){
     console.log('editing!')
+    let { currentPage } = this.state;
     this.setState({
-      isEditing: true
+      isEditing: true,
+      shadowPage: Object.assign({}, currentPage)
     });
   }
 
@@ -203,7 +210,7 @@ class App extends Component {
         this.setState({
           isEditing: false,
           currentPage: newPage,
-          pages: [newPage].concat(this.state.pages)
+          pages: [newPage, ...this.state.pages]
         });
       },
       (respErr) => {
@@ -211,19 +218,20 @@ class App extends Component {
       });
   }
 
-  onUpdatePage(pageKey, pageTitle, pageContent){
+  onUpdatePage(){
     console.log('saving!');
-    console.log(pageKey);
+    let { shadowPage, currentPage, currentBackendName } = this.state;
 
-    updatePage(pageKey, pageTitle, pageContent, this.state.currentBackendName)
+    updatePage(currentPage.key, shadowPage.title, shadowPage.contents, currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
-        newPage.contents = pageContent;
+        newPage.contents = shadowPage.contents;
 
         this.setState({
           isEditing: false,
+          shadowPage: {},
           currentPage: newPage,
-          pages: [newPage].concat(this.state.pages)
+          pages: [newPage, ...this.state.pages]
         });
       },
       (respErr) => {
@@ -237,12 +245,14 @@ class App extends Component {
 
     this.setState({
       currentPage: {},
+      shadowPage: {},
       isEditing: true
     })
   }
 
   onCancelUpdate(){
     this.setState({
+      shadowPage: {},
       isEditing: false
     });
   }
@@ -285,11 +295,27 @@ class App extends Component {
     });
   }
 
+  onUpdateShadowPage(newPage){
+    console.log(newPage.contents);
+    this.setState({
+      shadowPage: Object.assign({}, newPage)
+    });
+  }
+
+  onTogglePreviewMode(previewMode){
+    this.setState({
+      isPreviewMode: previewMode
+    });
+  }
+
   render(){
-    let { pages, currentPage, isLoading, isEditing } = this.state;
+    let { pages, currentPage, shadowPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
+    let { isPreviewMode, onTogglePreviewMode } = this.state;
+    // still ironing out the contract of the alert component
+    // hacking for now.
     let autodismiss = true;
 
     return (
@@ -339,7 +365,11 @@ class App extends Component {
               {isLoading && <Throbber/> }
               {!isLoading && <WikiContainer
                                 page={currentPage}
+                                shadowPage={shadowPage}
+                                onUpdateShadowPage={this.onUpdateShadowPage}
                                 isEditing={isEditing}
+                                isPreviewMode={isPreviewMode}
+                                onTogglePreviewMode={this.onTogglePreviewMode}
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
                                 onCreatePage={this.onCreatePage}
