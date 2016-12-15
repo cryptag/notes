@@ -195,9 +195,9 @@ class App extends Component {
   onCreatePage(pageTitle, pageContent, pageTags){
     console.log('Creating new page with title:', pageTitle);
 
-    let backend = this.state.currentBackendName;
+    let { shadowPage, currentBackendName } = this.state;
 
-    createPage(pageTitle, pageContent, pageTags, backend)
+    createPage(shadowPage.title, shadowPage.contents, pageTags, currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
 
@@ -205,7 +205,7 @@ class App extends Component {
         // (since it could theoretically be huge, the server never
         // does any processing, and whoever's uploading it obviously
         // already has it), so use the local pageContent
-        newPage.contents = pageContent;
+        newPage.contents = shadowPage.contents;
 
         this.setState({
           isEditing: false,
@@ -296,6 +296,7 @@ class App extends Component {
   }
 
   onUpdateShadowPage(newPage){
+    console.log(newPage.title);
     console.log(newPage.contents);
     this.setState({
       shadowPage: Object.assign({}, newPage)

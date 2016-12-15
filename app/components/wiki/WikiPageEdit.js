@@ -12,6 +12,7 @@ class WikiPageEdit extends Component {
     this.onCancelClick = this.onCancelClick.bind(this);
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onUpdateContent = this.onUpdateContent.bind(this);
+    this.onUpdateTitle = this.onUpdateTitle.bind(this);
   }
 
   onSaveClick(e){
@@ -53,6 +54,17 @@ class WikiPageEdit extends Component {
     onUpdateShadowPage(newPage);
   }
 
+  // if we end up with more than two fields we're updating,
+  // this might become an anti-pattern.
+  onUpdateTitle(event){
+    event.preventDefault();
+    let { shadowPage, onUpdateShadowPage } = this.props;
+    let newPage = Object.assign({},
+                                shadowPage,
+                                {'title': event.target.value });
+    onUpdateShadowPage(newPage);
+  }
+
   render(){
     let { shadowPage, isPreviewMode } = this.props;
     let title = shadowPage.title || "";
@@ -72,7 +84,7 @@ class WikiPageEdit extends Component {
           </div>
           <div className="form-group page-title-bar" ref="page_title">
             <label>Page Title</label>
-            <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} />
+            <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
             <NavItem eventKey="1">Edit</NavItem>
