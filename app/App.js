@@ -79,7 +79,7 @@ class App extends Component {
   loadBackends(){
     getBackends().then( (response) => {
       let backendName = localStorage.getItem(BACKEND_KEY);
-      let backends = response.body;
+      let backends = response;
       if (backends.length > 0) {
         let backendNames = backends.map(bk => bk.Name);
 
@@ -99,8 +99,8 @@ class App extends Component {
         this.onSetBackend(backendName);
       }
 
-    }, (respErr) => {
-      console.log("Error fetching backends: " + respErr);
+    }).catch((err) => {
+      console.log("Error fetching backends: " + err);
       this.loadPageList('');
     });
   }
@@ -119,14 +119,14 @@ class App extends Component {
     console.log(backend);
 
     listPages(backend).then( (response) => {
-      let pages = formatPages(response.body);
+      let pages = formatPages(response);
 
       this.setState({
         pages: pages,
         isLoading: false
       });
-    }, (respErr) => {
-      console.log("Error loading page list: " + respErr);
+    }).catch((err) => {
+      console.log("Error loading page list: " + err);
 
       // Would probably be better to revert to previous backend and
       // continue showing its pages list, but this is a quick fix that
@@ -150,7 +150,7 @@ class App extends Component {
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackendName;
     getPages(backend, [pageKey]).then( (response) => {
-      let pages = formatPages(response.body);
+      let pages = formatPages(response);
       if (pages.length === 0) {
         console.log("Error fetching row with ID tag", pageKey, "from Backend",
                     backend);
@@ -160,6 +160,13 @@ class App extends Component {
       this.setState({
         currentPage: pages[0],
         isLoading: false
+      });
+    }).catch((err) => {
+      console.log("Error from getPages:", err)
+      this.setState({
+        currentPage: {},
+        isLoading: false,
+        isEditing: true
       });
     })
   }
@@ -184,7 +191,7 @@ class App extends Component {
 
     createPage(pageTitle, pageContent, pageTags, backend)
       .then((response) => {
-        let newPage = formatPage(response.body);
+        let newPage = formatPage(response);
 
         // cryptagd responds with the plaintags but not the contents
         // (since it could theoretically be huge, the server never
@@ -209,7 +216,7 @@ class App extends Component {
 
     updatePage(pageKey, pageTitle, pageContent, this.state.currentBackendName)
       .then((response) => {
-        let newPage = formatPage(response.body);
+        let newPage = formatPage(response);
         newPage.contents = pageContent;
 
         this.setState({

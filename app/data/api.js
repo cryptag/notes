@@ -1,81 +1,49 @@
-const request = require('superagent');
-const cryptagdPrefix = require('superagent-prefix')('http://localhost:7878/trusted');
+const cryptagdPrefix = 'http://localhost:7878/trusted';
+
 
 const requestPost = function(urlSuffix, data, backendName){
-  return new Promise((resolve, reject) => {
-    request
-      .post(urlSuffix)
-      .use(cryptagdPrefix)
-      .send(data)
-      .set('X-Backend', backendName || '')
-      .end((err, res) => {
-        let respErr = '';
-
-        if (err) {
-          if (typeof res === 'undefined') {
-            respErr = err.toString();
-          } else {
-            // cryptagd's error format: {"error": "..."}
-            respErr = res.body.error;
-          }
-
-          reject(respErr);
-        }
-
-        resolve(res);
-      });
-  });
+  let req = new Request(cryptagdPrefix + urlSuffix);
+  return fetch(req, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Backend': backendName || ''
+    },
+    body: JSON.stringify(data)
+  })
+  .then((response) => handleResponse(response))
 }
 
 const requestPut = function(urlSuffix, data, backendName){
-  return new Promise((resolve, reject) => {
-    request
-      .put(urlSuffix)
-      .use(cryptagdPrefix)
-      .send(data)
-      .set('X-Backend', backendName || '')
-      .end((err, res) => {
-        let respErr = '';
-
-        if (err) {
-          if (typeof res === 'undefined') {
-            respErr = err.toString();
-          } else {
-            // cryptagd's error format: {"error": "..."}
-            respErr = res.body.error;
-          }
-
-          reject(respErr);
-        }
-
-        resolve(res);
-      });
-  });
+  let req = new Request(cryptagdPrefix + urlSuffix);
+  return fetch(req, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Backend': backendName || ''
+    },
+    body: JSON.stringify(data)
+  })
+  .then((response) => handleResponse(response))
 }
 
 const requestGet = function(urlSuffix, backendName){
-  return new Promise((resolve, reject) => {
-    request
-      .get(urlSuffix)
-      .use(cryptagdPrefix)
-      .set('X-Backend', backendName || '')
-      .end((err, res) => {
-        let respErr = '';
+  let req = new Request(cryptagdPrefix + urlSuffix);
+  return fetch(req, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Backend': backendName || ''
+    }
+  })
+  .then((response) => handleResponse(response))
+}
 
-        if (err) {
-          if (typeof res === 'undefined') {
-            respErr = err.toString();
-          } else {
-            // cryptagd's error format: {"error": "..."}
-            respErr = res.body.error;
-          }
-
-          reject(respErr);
-        }
-
-        resolve(res);
-      });
-  });
+let handleResponse = function(response) {
+  if (!response.ok) {
+    return new Error(response)
+  }
+  return response.json()
 }
 
 export const reqPost = requestPost;
