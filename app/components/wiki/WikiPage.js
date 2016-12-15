@@ -17,6 +17,11 @@ class WikiPage extends Component {
     onEditPage(page);
   }
 
+  shouldComponentUpdate(newProps){
+    let { page } = this.props;
+    return page !== newProps.page;
+  }
+
   render(){
     let { page } = this.props;
     let title = page.title || "untitled";
