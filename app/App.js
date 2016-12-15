@@ -217,7 +217,7 @@ class App extends Component {
         });
       })
       .catch((err) => {
-        console.log("Error creating new page with title", pageTitle, ";", err);
+        console.log("Error creating new page with title", shadowPage.title, ";", err);
       });
   }
 
@@ -238,7 +238,7 @@ class App extends Component {
         });
       })
       .catch((err) => {
-        console.log("Error updating page with ID-tag", pageKey, ";", err);
+        console.log("Error updating page with ID-tag", currentPage.key, ";", err);
       });
   }
 
