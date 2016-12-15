@@ -4,10 +4,14 @@ import { findDOMNode } from 'react-dom';
 import { Alert } from 'react-bootstrap';
 
 class AlertContainer extends Component {
-  constructor(){
-    super(...arguments);
+  constructor(props){
+    super(props);
 
     this.onAlertDismiss = this.onAlertDismiss.bind(this);
+
+    if (props.autodismiss){
+      setTimeout(() => this.onAlertDismiss(), 3000);
+    }
   }
 
   onAlertDismiss(e){
@@ -26,10 +30,6 @@ class AlertContainer extends Component {
     let { autodismiss, showAlert, message, alertStyle } = this.props;
     if (['success', 'error', 'warning'].indexOf(alertStyle) === -1){
       alertStyle = 'success';
-    }
-
-    if (autodismiss){
-      setTimeout(() => this.onAlertDismiss(), 3000);
     }
 
     return (
