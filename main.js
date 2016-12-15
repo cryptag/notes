@@ -52,3 +52,26 @@ app.on('activate', function() {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// Start cryptagd
+
+const spawn = require('child_process').spawn;
+
+let runCmd = './cryptagd'
+if (process.platform === 'win32') {
+  runCmd = '.\cryptagd.exe';
+}
+
+const cryptagd = spawn(runCmd);
+
+cryptagd.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+
+cryptagd.stderr.on('data', (data) => {
+  console.log(`stderr: ${data}`);
+});
+
+cryptagd.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
