@@ -215,9 +215,9 @@ class App extends Component {
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
-      },
-      (respErr) => {
-        console.log("Error creating new page with title", pageTitle, ";", respErr);
+      })
+      .catch((err) => {
+        console.log("Error creating new page with title", pageTitle, ";", err);
       });
   }
 
@@ -236,9 +236,9 @@ class App extends Component {
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
-      },
-      (respErr) => {
-        console.log("Error updating page with ID-tag", pageKey, ";", respErr);
+      })
+      .catch((err) => {
+        console.log("Error updating page with ID-tag", pageKey, ";", err);
       });
   }
 
