@@ -108,7 +108,9 @@ class App extends Component {
   onSetBackend(backendName){
     localStorage.setItem(BACKEND_KEY, backendName);
     this.setState({
-      currentBackendName: backendName
+      currentBackendName: backendName,
+      currentPage: {},
+      isEditing: true
     });
     this.loadPageList(backendName);
   }
@@ -132,12 +134,11 @@ class App extends Component {
       // continue showing its pages list, but this is a quick fix that
       // keeps the selected backend and the pages list in sync
 
-      // if no pages, bring up edit form and encourage to create a 
-      // first page ?
       this.setState({
         currentPage: {},
         pages: [],
-        isLoading: false
+        isLoading: false,
+        isEditing: true
       });
     });
   }
