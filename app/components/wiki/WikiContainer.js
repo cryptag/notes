@@ -37,6 +37,7 @@ WikiContainer.propTypes = {
   onUpdateShadowPage: PropTypes.func.isRequired,
   isPreviewMode: PropTypes.bool.isRequired,
   onTogglePreviewMode: PropTypes.func.isRequired,
+  onCreatePage: PropTypes.func.isRequired,
   onEditPage: PropTypes.func.isRequired,
   onUpdatePage: PropTypes.func.isRequired,
   onCancelUpdate: PropTypes.func.isRequired,
