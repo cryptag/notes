@@ -77,6 +77,7 @@ class App extends Component {
     this.loadUsername();
     this.loadBackends();
     this.setState({isEditing: true});
+    this.pollForPages();
   }
 
   // failure case #1: what if backends don't load?
@@ -179,7 +180,9 @@ class App extends Component {
 
   pollForPages(){
     setInterval(() => {
-      console.log("Fake-polling for new pages, or updates to the current page, or somethin'...");
+      console.log('polling for pages');
+      let { currentBackendName } = this.state;
+      this.loadPageList(currentBackendName);
     }, 5000)
   }
 

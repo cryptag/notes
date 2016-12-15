@@ -4,6 +4,11 @@ import WikiPageLink from './WikiPageLink';
 
 class WikiPageList extends Component {
 
+  // shouldComponentUpdate(newProps){
+  //   let { pages } = this.props;
+  //   return newProps.pages !== pages;
+  // }
+
   render(){
     let { pages, loadPageByKey, onBlankPageClick } = this.props;
 
