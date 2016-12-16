@@ -257,6 +257,7 @@ class App extends Component {
   onCancelUpdate(){
     this.setState({
       shadowPage: {},
+      isPreviewMode: false,
       isEditing: false
     });
   }
