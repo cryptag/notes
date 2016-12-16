@@ -191,6 +191,7 @@ class App extends Component {
     let { currentPage } = this.state;
     this.setState({
       isEditing: true,
+      isPreviewMode: false,
       shadowPage: Object.assign({}, currentPage)
     });
   }
