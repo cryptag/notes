@@ -68,7 +68,7 @@ class App extends Component {
   loadUsername(){
     let { username } = this.state;
 
-    if (!username){
+    if (!username || (username.length && username.length === 0)){
       this.promptForUsername();
     }
   }
