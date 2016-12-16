@@ -17,7 +17,7 @@ function createWindow() {
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -58,8 +58,13 @@ app.on('activate', function() {
 const spawn = require('child_process').spawn;
 
 let runCmd = './cryptagd'
+
 if (process.platform === 'win32') {
   runCmd = '.\cryptagd.exe';
+}
+
+if (process.platform === 'darwin'){
+  runCmd = 'cryptagd';
 }
 
 const cryptagd = spawn(runCmd);
