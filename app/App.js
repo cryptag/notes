@@ -232,6 +232,7 @@ class App extends Component {
 
         this.setState({
           isEditing: false,
+          isPreviewMode: false,
           shadowPage: {},
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
