@@ -349,7 +349,7 @@ class App extends Component {
 
           <div className="backend-container">
             <h3>Backends</h3>
-            <DropdownList
+            <DropdownList duration={0}
               data={backends.map(bk => bk.Name)}
               value={currentBackendName}
               onChange={this.onSelectBackend} />
