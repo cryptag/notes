@@ -35,6 +35,7 @@
     "gulp-inject": "^4.1.0",
     "gulp-sass": "^2.3.2",
     "react-addons-test-utils": "^15.1.0",
+    "shelljs": "^0.7.5",
     "spectron": "^3.2.3",
     "webdriverio": "^4.1.1",
     "wiredep": "^4.0.0"
