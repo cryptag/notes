@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "node_modules/.bin/electron main.js",
-    "build": "electron-packager ./ CrypTag_Notes --platform=darwin --arch=x64 --overwrite",
-    "build-linux": "electron-packager ./ CrypTag_Notes --platform=linux --arch=x64 --overwrite",
+    "build": "electron-packager ./ cryptag-notes --platform=darwin --arch=x64 --overwrite",
+    "build-linux": "electron-packager ./ cryptag-notes --platform=linux --arch=x64 --overwrite",
     "test": "node_modules/.bin/mocha test/.setup.js test/**/*.test.js"
   },
   "keywords": [
