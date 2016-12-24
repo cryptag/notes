@@ -10,6 +10,7 @@
     "start": "node_modules/.bin/electron main.js",
     "build": "electron-packager ./ cryptag-notes --platform=darwin --arch=x64 --overwrite",
     "build-linux": "electron-packager ./ cryptag-notes --platform=linux --arch=x64 --overwrite",
+    "build-windows": "electron-packager ./ cryptag-notes --platform=win32 --arch=x64 --overwrite",
     "test": "node_modules/.bin/mocha test/.setup.js test/**/*.test.js"
   },
   "keywords": [
