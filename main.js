@@ -5,6 +5,8 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
+const path = require('path')
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -59,8 +61,7 @@ const spawn = require('child_process').spawn;
 const fs = require('fs');
 
 const spawnCryptagd = (runCmd) => {
-  console.log('spawnCryptagd')
-  console.log(runCmd);
+  console.log('spawnCryptagd', runCmd);
   const cryptagd = spawn(runCmd);
 
   cryptagd.stdout.on('data', (data) => {
@@ -76,23 +77,20 @@ const spawnCryptagd = (runCmd) => {
   });
 }
 
-let runCmd = './cryptagd'
+let runCmd = path.join(__dirname, 'cryptagd');
 
 if (['darwin', 'linux'].indexOf(process.platform) > -1){
-  fs.stat('./cryptagd', function(err, stat){
+  fs.stat(runCmd, function(err, stat){
     if (!err){
-      console.log('cryptagd file exists!');
-      // spawn the binary in local dir if exists
-      spawnCryptagd('./cryptagd');
+      // spawn the binary in local project dir if exists
+      spawnCryptagd(runCmd);
     } else if (err.code === "ENOENT") {
-      console.log('cryptagd file does not exist!');
-      // does system have any cryptagd? Run that one.
+      console.log('cryptagd file does not exist! Trying system-wide...');
       shelljs.exec('echo `which cryptagd`', function(code, stdout, stderr){
         spawnCryptagd(stdout);
       });
     }
   })
 } else if (process.platform === 'win32'){
-  runCmd = '.\cryptagd.exe';
-  spawnCryptagd(runCmd);
+  spawnCryptagd(runCmd + '.exe');
 }
