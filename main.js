@@ -87,7 +87,7 @@ if (['darwin', 'linux'].indexOf(process.platform) > -1){
     } else if (err.code === "ENOENT") {
       console.log('cryptagd file does not exist! Trying system-wide...');
       shelljs.exec('echo `which cryptagd`', function(code, stdout, stderr){
-        spawnCryptagd(stdout);
+        spawnCryptagd(stdout.trim());
       });
     }
   })
