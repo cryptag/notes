@@ -1,8 +1,11 @@
 const electron = require('electron')
+const shelljs = require('shelljs')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+
+const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -54,24 +57,40 @@ app.on('activate', function() {
 // code. You can also put them in separate files and require them here.
 
 // Start cryptagd
-
 const spawn = require('child_process').spawn;
+const fs = require('fs');
 
-let runCmd = './cryptagd'
-if (process.platform === 'win32') {
-  runCmd = '.\cryptagd.exe';
+const spawnCryptagd = (runCmd) => {
+  console.log('spawnCryptagd', runCmd);
+  const cryptagd = spawn(runCmd);
+
+  cryptagd.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  cryptagd.stderr.on('data', (data) => {
+    console.log(`stderr: ${data}`);
+  });
+
+  cryptagd.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
 }
 
-const cryptagd = spawn(runCmd);
+let runCmd = path.join(__dirname, 'cryptagd');
 
-cryptagd.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
-
-cryptagd.stderr.on('data', (data) => {
-  console.log(`stderr: ${data}`);
-});
-
-cryptagd.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
-});
+if (['darwin', 'linux'].indexOf(process.platform) > -1){
+  fs.stat(runCmd, function(err, stat){
+    if (!err){
+      // spawn the binary in local project dir if exists
+      spawnCryptagd(runCmd);
+    } else if (err.code === "ENOENT") {
+      console.log('cryptagd file does not exist! Trying system-wide...');
+      shelljs.exec('echo `which cryptagd`', function(code, stdout, stderr){
+        spawnCryptagd(stdout);
+      });
+    }
+  })
+} else if (process.platform === 'win32'){
+  spawnCryptagd(runCmd + '.exe');
+}

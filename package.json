@@ -36,12 +36,15 @@
     "gulp-inject": "^4.1.0",
     "gulp-sass": "^2.3.2",
     "react-addons-test-utils": "^15.1.0",
+    "shelljs": "^0.7.5",
     "spectron": "^3.2.3",
     "webdriverio": "^4.1.1",
     "wiredep": "^4.0.0"
   },
   "dependencies": {
+    "fs-extra": "^1.0.0",
     "jsdom": "^9.8.3",
+    "mkdirp": "^0.5.1",
     "mocha": "^2.5.3",
     "node-notifier": "^4.6.0",
     "react": "^15.1.0",

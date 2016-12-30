@@ -1,3 +1,8 @@
+import fse from 'fs-extra';
+import mkdirp from 'mkdirp';
+import os from 'os';
+import path from 'path';
+
 import React, { Component } from 'react';
 
 import { getBackends } from './data/general/backend';
@@ -315,6 +320,43 @@ class App extends Component {
     });
   }
 
+  onDragOver(e) {
+    if (e.preventDefault) {
+      e.preventDefault();
+    }
+    return false;
+  }
+
+  onDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    let backendsDir = path.join(os.homedir(), '.cryptag', 'backends');
+
+    mkdirp(backendsDir, (err) => {
+      if (err) {
+        console.error('Error creating ~/.cryptag/backends --', err);
+      }
+    });
+
+    let files = e.dataTransfer.files;
+    for (var i = 0, f; f = files[i]; i++) {
+      let j = i;
+      // Move Backend config from current location to ~/.cryptag/backends
+      fse.move(f.path, path.join(backendsDir, f.name), {clobber: false}, (err) => {
+        if (err) {
+          console.log("Error moving drag-and-drop'd file:", err);
+        } else {
+          // TODO(elimisteve): Don't always assume that the Backend
+          // name is the filename minus the file extension
+          let name = files[j].name.replace('.json', '');
+          alert(`New backend "${name}" created! Please restart CrypTag Notes` +
+                " (and, if you're a geek, also restart cryptagd).");
+        }
+      });
+    }
+  }
+
   render(){
     let { pages, currentPage, shadowPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
@@ -350,7 +392,7 @@ class App extends Component {
                                   onSetUsername={this.onSetUsername}
                                   onCloseModal={this.onCloseUsernameModal} />}
 
-          <div className="backend-container">
+          <div className="backend-container" onDragOver={this.onDragOver} onDrop={this.onDrop}>
             <h3>Backends</h3>
             <DropdownList duration={0}
               data={backends.map(bk => bk.Name)}
