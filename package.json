@@ -1,6 +1,6 @@
 {
   "name": "cryptag-notes",
-  "version": "0.8.0",
+  "version": "0.4.3",
   "description": "Secure note-taking and collaborative wiki page editing app",
   "main": "main.js",
   "bugs": {
