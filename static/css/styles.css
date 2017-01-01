@@ -59,11 +59,10 @@ main {
   width: 80%;
   background-color: #fff; }
 
-.page-content {
-  padding: 15px;
-  border: solid 1px #ccc;
-  border-radius: 15px; }
-  .page-content textarea {
+.wiki-page-view {
+  padding: 0em 1em; }
+
+.page-content textarea {
     height: 500px;
     width: 800px; }
 

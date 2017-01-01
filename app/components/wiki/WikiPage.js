@@ -30,7 +30,7 @@ class WikiPage extends Component {
     console.log("Rendering WikiPage...");
 
     return (
-      <div className="wiki-page">
+      <div className="wiki-page wiki-page-view">
         <div className="toolbar">
           <button className="btn btn-primary" onClick={this.onEditClick}>Edit</button>
         </div>

@@ -83,7 +83,7 @@ class WikiPageEdit extends Component {
             <button className="btn btn-default" onClick={this.onCancelClick}>Cancel</button>
           </div>
           <div className="form-group page-title-bar" ref="page_title">
-            <label>Page Title</label>
+            <label>Title</label>
             <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
@@ -91,7 +91,6 @@ class WikiPageEdit extends Component {
             <NavItem eventKey="2">Preview</NavItem>
           </Nav>
           <div className="form-group page-content" ref="page_content">
-            <label>Content</label>
             {isPreviewMode &&  <ReactMarkdown source={content} />}
             {!isPreviewMode && <textarea className="form-control" defaultValue={content} onChange={this.onUpdateContent}></textarea>}
           </div>
