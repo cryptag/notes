@@ -91,7 +91,7 @@ class WikiPageEdit extends Component {
             <NavItem eventKey="2">Preview</NavItem>
           </Nav>
           <div className="form-group page-content" ref="page_content">
-            {isPreviewMode &&  <ReactMarkdown source={content} />}
+            {isPreviewMode && <ReactMarkdown className="wiki-page-view" source={content} />}
             {!isPreviewMode && <textarea className="form-control" defaultValue={content} onChange={this.onUpdateContent}></textarea>}
           </div>
         </form>
