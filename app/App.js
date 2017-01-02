@@ -350,6 +350,10 @@ class App extends Component {
           // TODO(elimisteve): Don't always assume that the Backend
           // name is the filename minus the file extension
           let name = files[j].name.replace('.json', '');
+
+          // Make the new Backend the one that is selected after restart
+          localStorage.setItem(BACKEND_KEY, name);
+
           alert(`New backend "${name}" created! Please restart CrypTag Notes` +
                 " (and, if you're a geek, also restart cryptagd).");
         }
