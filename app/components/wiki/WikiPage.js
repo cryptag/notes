@@ -40,7 +40,7 @@ class WikiPage extends Component {
         </div>
         <hr/>
         <div className="page-content">
-          <ReactMarkdown source={content} />
+          <ReactMarkdown source={content} escapeHtml={true} />
         </div>
       </div>
     );
