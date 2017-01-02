@@ -24,9 +24,11 @@ export function createPage(title, contents, tags, backendName){
 }
 
 function pageToPost(title, contents){
+  let titleCleaned = title.replace(/\.md$/, '');
   return {
     unencrypted: btoa(utf8.encode(contents)),
-    plaintags: ['type:text', 'type:md', 'app:cryptagnotes', `title:${title}`]
+    plaintags: ['type:text', 'type:md', 'app:cryptagnotes', `title:${title}`,
+                'type:file', `filename:${titleCleaned}.md`]
   }
 }
 
