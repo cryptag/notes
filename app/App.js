@@ -381,7 +381,7 @@ class App extends Component {
           onHideAlert={this.onHideAlert} />
 
         <div className="side-content">
-          <h1>CrypTag Notes&nbsp;<i className="fa fa-handshake-o"></i></h1>
+          <h1>CrypTag Notes</h1>
           <hr/>
           <div>
             <i className="fa fa-user-circle-o"></i>&nbsp;
