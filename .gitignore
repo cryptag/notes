@@ -4,3 +4,5 @@ CryptWiki-darwin-x64/
 CryptWiki-linux-x64/
 *~
 .DS_Store
+# exclude binary or symlink
+cryptagd
