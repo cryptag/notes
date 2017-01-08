@@ -38,7 +38,7 @@ export function createPage(title, contents, tags, backendName){
 function pageToPost(title, contents){
   let titleCleaned = title.replace(/\.md$/, '');
   return {
-    unencrypted: btoa(utf8.encode(contents)),
+    unencrypted: btoa(utf8.encode(contents || '')),
     plaintags: ['type:text', 'type:md',
                 'type:file', `filename:${titleCleaned}.md`]
   }
@@ -47,7 +47,7 @@ function pageToPost(title, contents){
 function pageToPut(pageKey, title, contents){
   // TODO: Acknowledge new title
   return {
-    unencrypted: btoa(utf8.encode(contents)),
+    unencrypted: btoa(utf8.encode(contents || '')),
     old_version_id_tag: pageKey
   }
 }
