@@ -39,16 +39,21 @@ export function tagsByPrefixStripped(plaintags, prefix) {
 }
 
 export function sortRowByCreated(row, nextRow){
-  let date = tagByPrefix(row.tags || row.plaintags, 'created:');
-  let next = tagByPrefix(nextRow.tags || nextRow.plaintags, 'created:');
-
-  return date.localeCompare(next);
+  return sortRowBy.call(sortRowBy, 'created:', true, row, nextRow);
 }
 
 export function sortRowByCreatedDescending(row, nextRow){
-  let date = tagByPrefix(row.tags || row.plaintags, 'created:');
-  let next = tagByPrefix(nextRow.tags || nextRow.plaintags, 'created:');
+  return sortRowBy.call(sortRowBy, 'created:', false, row, nextRow);
+}
 
+// Use: pages.sort( sortRowBy.bind(sortRowBy, 'created:', false) )
+export function sortRowBy(plaintag, ascending, row, nextRow){
+  let date = tagByPrefix(row.tags || row.plaintags, plaintag);
+  let next = tagByPrefix(nextRow.tags || nextRow.plaintags, plaintag);
+
+  if (ascending) {
+    return date.localeCompare(next);
+  }
   return next.localeCompare(date);
 }
 
