@@ -11,10 +11,22 @@ export function listPages(backendName){
   return reqPost('/rows/list', {"plaintags": plaintags}, backendName);
 }
 
+export function listPagesVersionedLatest(backendName){
+  console.log("listPagesVersionedLatest(", backendName, ")");
+  let plaintags = ['type:md'];
+  return reqPost('/rows/list/versioned/latest', {"plaintags": plaintags}, backendName);
+}
+
 export function getPages(backendName, tags=[]){
   let plaintags = ['type:md'];
   plaintags = plaintags.concat(tags)
   return reqPost('/rows/get', {"plaintags": plaintags}, backendName);
+}
+
+export function getPagesVersionedLatest(backendName, tags=[]){
+  let plaintags = ['type:md'];
+  plaintags = plaintags.concat(tags)
+  return reqPost('/rows/get/versioned/latest', {"plaintags": plaintags}, backendName);
 }
 
 export function createPage(title, contents, tags, backendName){

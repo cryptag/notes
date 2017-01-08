@@ -6,8 +6,9 @@ import path from 'path';
 import React, { Component } from 'react';
 
 import { getBackends } from './data/general/backend';
-import { listPages, getPages, updatePage, createPage } from './data/wiki/pages';
+import { listPagesVersionedLatest, getPagesVersionedLatest, updatePage, createPage } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
+import { versionsOfSameRow } from './utils/row';
 
 import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
@@ -131,7 +132,7 @@ class App extends Component {
     console.log('backend');
     console.log(backend);
 
-    listPages(backend).then( (response) => {
+    listPagesVersionedLatest(backend).then( (response) => {
       let pages = formatPages(response);
 
       this.setState({
@@ -161,7 +162,7 @@ class App extends Component {
     });
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackendName;
-    getPages(backend, [pageKey]).then( (response) => {
+    getPagesVersionedLatest(backend, [pageKey]).then( (response) => {
       let pages = formatPages(response);
       if (pages.length === 0) {
         console.log("Error fetching row with ID tag", pageKey, "from Backend",
@@ -174,7 +175,7 @@ class App extends Component {
         isLoading: false
       });
     }).catch((err) => {
-      console.log("Error from getPages:", err)
+      console.log("Error from getPagesVersionedLatest:", err)
       this.setState({
         currentPage: {},
         isLoading: false,
@@ -236,12 +237,35 @@ class App extends Component {
         let newPage = formatPage(response);
         newPage.contents = shadowPage.contents;
 
+        let replaceNdx = -1;
+
+        // Find the page we just updated and replace it below
+
+        let pages = this.state.pages;
+        for (let i = 0; i < pages.length; i++) {
+          if (versionsOfSameRow(pages[i], newPage)){
+            replaceNdx = i;
+            break
+          }
+        }
+
+        var newPages;
+        if (replaceNdx !== -1){
+          // Replace old version
+          newPages = [...pages.slice(0, replaceNdx),
+                      newPage,
+                      ...pages.slice(replaceNdx+1)]
+        } else {
+          // If page we're updating not found, prepend new one to pages list
+          newPages = [newPage, ...pages];
+        }
+
         this.setState({
           isEditing: false,
           isPreviewMode: false,
           shadowPage: {},
           currentPage: newPage,
-          pages: [newPage, ...this.state.pages]
+          pages: newPages
         });
       })
       .catch((err) => {
