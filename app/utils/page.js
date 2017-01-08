@@ -10,9 +10,11 @@ export function formatPages(rawPages){
 }
 
 export function formatPage(row){
+  let title = tagByPrefixStripped(row.plaintags, 'title:', 'filename:');
+  let titleCleaned = title.replace(/\.md$/, '');
   return {
       key: tagByPrefix(row.plaintags, 'id:'),
-      title: tagByPrefixStripped(row.plaintags, 'title:', 'filename:'),
+      title: titleCleaned,
       contents: utf8.decode(atob(row.unencrypted || '')),
       tags: row.plaintags
     }
