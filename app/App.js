@@ -99,7 +99,7 @@ class App extends Component {
 
         if (!backendName){
           backendName = backendNames[0];
-          
+
           if (backendNames.indexOf("default") > -1) {
             backendName = "default";
           }
@@ -420,7 +420,7 @@ class App extends Component {
                 <i className="fa fa-pencil-square-o"></i>
               </button>
           </div>
-          {showUsernameModal && <UsernameModal 
+          {showUsernameModal && <UsernameModal
                                   username={username}
                                   showModal={showUsernameModal}
                                   onSetUsername={this.onSetUsername}
