@@ -42,14 +42,6 @@ export default class RichTextWidget extends Component {
             readOnly={this.state.readOnly}
           />
         </div>
-        <div className="row">
-          <textarea
-            className="source"
-            placeholder="Editor Source"
-            value={value.toString(format)}
-            onChange={this._onChangeSource}
-          />
-        </div>
       </div>
     );
   }
@@ -62,13 +54,5 @@ export default class RichTextWidget extends Component {
         value.toString('markdown')
       );
     }
-  }
-
-  _onChangeSource(event: Object) {
-    let source = event.target.value;
-    let oldValue = this.state.value;
-    this.setState({
-      value: oldValue.setContentFromString(source, this.state.format),
-    });
   }
 }
