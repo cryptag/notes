@@ -13,6 +13,7 @@ import { versionsOfSameRow } from './utils/row';
 import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
+import RichTextWidget from './components/wiki/RichTextWidget';
 import Throbber from './components/general/Throbber';
 import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
@@ -63,6 +64,7 @@ class App extends Component {
 
     this.onTogglePreviewMode = this.onTogglePreviewMode.bind(this);
 
+    this.onUserTyping = this.onUserTyping.bind(this);
   }
 
   promptForUsername(){
@@ -385,6 +387,10 @@ class App extends Component {
     }
   }
 
+  onUserTyping(markdown){
+    console.log(`onUserTyping: got ${markdown}`);
+  }
+
   render(){
     let { pages, currentPage, shadowPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
@@ -440,7 +446,7 @@ class App extends Component {
           <main>
             <div className="wiki-container">
               {isLoading && <Throbber/> }
-              {!isLoading && <WikiContainer
+              {/*!isLoading && <WikiContainer
                                 page={currentPage}
                                 shadowPage={shadowPage}
                                 onUpdateShadowPage={this.onUpdateShadowPage}
@@ -450,7 +456,9 @@ class App extends Component {
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
                                 onCreatePage={this.onCreatePage}
-                                onUpdatePage={this.onUpdatePage}/>}
+                                onUpdatePage={this.onUpdatePage}/>*/}
+              {!isLoading && <RichTextWidget
+                               onChange={this.onUserTyping} />}
             </div>
           </main>
         </div>
