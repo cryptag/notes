@@ -14,7 +14,7 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
 import RichTextWidget from './components/wiki/RichTextWidget';
-import RichTextEditor from 'react-rte-imagesupport';
+import RichTextEditor, { createValueFromString } from 'react-rte-imagesupport';
 import Throbber from './components/general/Throbber';
 import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
@@ -49,7 +49,6 @@ class App extends Component {
     this.loadPageByKey = this.loadPageByKey.bind(this);
     this.loadBackends = this.loadBackends.bind(this);
 
-    this.onEditPage = this.onEditPage.bind(this);
     this.onCreatePage = this.onCreatePage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
@@ -171,8 +170,12 @@ class App extends Component {
         return;
       }
 
+      let partialPage = {
+        contents: createValueFromString(pages[0].contents || '', 'markdown')
+      }
+
       this.setState({
-        currentPage: pages[0],
+        currentPage: Object.assign({}, pages[0], partialPage),
         isLoading: false
       });
     }).catch((err) => {
@@ -190,14 +193,6 @@ class App extends Component {
       let { currentBackendName } = this.state;
       this.loadPageList(currentBackendName);
     }, 5000)
-  }
-
-  onEditPage(){
-    console.log('editing!')
-    let { currentPage } = this.state;
-    this.setState({
-      isPreviewMode: false
-    });
   }
 
   onCreatePage(pageTags=[]){
@@ -229,7 +224,7 @@ class App extends Component {
     console.log('saving!');
     let { currentPage, currentBackendName } = this.state;
 
-    updatePage(currentPage.key, currentPage.title, currentPage.contents, currentBackendName)
+    updatePage(currentPage.key, currentPage.title, currentPage.contents.toString('markdown'), currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
         newPage.contents = currentPage.contents;
@@ -375,7 +370,6 @@ class App extends Component {
                                  this.state.currentPage,
                                  pageUpdate)
     })
-    console.log('Updated page to', this.state.currentPage);
   }
 
   onSaveClick(e){
@@ -449,7 +443,6 @@ class App extends Component {
                                 page={currentPage}
                                 isPreviewMode={isPreviewMode}
                                 onTogglePreviewMode={this.onTogglePreviewMode}
-                                onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
                                 onCreatePage={this.onCreatePage}
                                 onUpdatePage={this.onUpdatePage}/>*/}
