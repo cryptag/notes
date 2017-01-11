@@ -14,12 +14,17 @@ import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
 import WikiContainer from './components/wiki/WikiContainer';
 import RichTextWidget from './components/wiki/RichTextWidget';
+import RichTextEditor from 'react-rte-imagesupport';
 import Throbber from './components/general/Throbber';
 import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
 
 const USERNAME_KEY = 'username';
 const BACKEND_KEY = 'current_backend';
+
+function createEmptyPage(){
+  return {contents: RichTextEditor.createEmptyValue()};
+}
 
 class App extends Component {
   constructor(){
@@ -30,7 +35,7 @@ class App extends Component {
     this.state = {
       currentBackendName: '',
       backends: [],
-      currentPage: {},
+      currentPage: createEmptyPage(),
       pages: [],
       username: username,
       showUsernameModal: false,
@@ -38,7 +43,6 @@ class App extends Component {
       isEditing: false,
       showAlert: true,
       alertMessage: 'Welcome to CrypTag Notes!',
-      shadowPage: {},
       isPreviewMode: false
     };
 
@@ -58,13 +62,13 @@ class App extends Component {
 
     this.onSelectBackend = this.onSelectBackend.bind(this);
     this.onSetBackend = this.onSetBackend.bind(this);
-    this.onUpdateShadowPage = this.onUpdateShadowPage.bind(this);
 
     this.onHideAlert = this.onHideAlert.bind(this);
 
     this.onTogglePreviewMode = this.onTogglePreviewMode.bind(this);
 
     this.onUserTyping = this.onUserTyping.bind(this);
+    this.onSaveClick = this.onSaveClick.bind(this);
   }
 
   promptForUsername(){
@@ -123,7 +127,7 @@ class App extends Component {
     localStorage.setItem(BACKEND_KEY, backendName);
     this.setState({
       currentBackendName: backendName,
-      currentPage: {},
+      currentPage: createEmptyPage(),
       isEditing: true
     });
     this.loadPageList(backendName);
@@ -149,7 +153,7 @@ class App extends Component {
       // keeps the selected backend and the pages list in sync
 
       this.setState({
-        currentPage: {},
+        currentPage: createEmptyPage(),
         pages: [],
         isLoading: false,
         isEditing: true
@@ -179,7 +183,7 @@ class App extends Component {
     }).catch((err) => {
       console.log("Error from getPagesVersionedLatest:", err)
       this.setState({
-        currentPage: {},
+        currentPage: createEmptyPage(),
         isLoading: false,
         isEditing: true
       });
@@ -199,17 +203,16 @@ class App extends Component {
     let { currentPage } = this.state;
     this.setState({
       isEditing: true,
-      isPreviewMode: false,
-      shadowPage: Object.assign({}, currentPage)
+      isPreviewMode: false
     });
   }
 
-  onCreatePage(pageTitle, pageContent, pageTags){
-    console.log('Creating new page with title:', pageTitle);
+  onCreatePage(pageTags=[]){
+    let { currentPage, currentBackendName } = this.state;
 
-    let { shadowPage, currentBackendName } = this.state;
+    console.log('Creating new page with title:', currentPage.title);
 
-    createPage(shadowPage.title, shadowPage.contents, pageTags, currentBackendName)
+    createPage(currentPage.title, currentPage.contents, pageTags, currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
 
@@ -217,7 +220,7 @@ class App extends Component {
         // (since it could theoretically be huge, the server never
         // does any processing, and whoever's uploading it obviously
         // already has it), so use the local pageContent
-        newPage.contents = shadowPage.contents;
+        newPage.contents = currentPage.contents;
 
         this.setState({
           isEditing: false,
@@ -226,18 +229,18 @@ class App extends Component {
         });
       })
       .catch((err) => {
-        console.log("Error creating new page with title", shadowPage.title, ";", err);
+        console.log("Error creating new page with title", currentPage.title, ";", err);
       });
   }
 
   onUpdatePage(){
     console.log('saving!');
-    let { shadowPage, currentPage, currentBackendName } = this.state;
+    let { currentPage, currentBackendName } = this.state;
 
-    updatePage(currentPage.key, shadowPage.title, shadowPage.contents, currentBackendName)
+    updatePage(currentPage.key, currentPage.title, currentPage.contents, currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
-        newPage.contents = shadowPage.contents;
+        newPage.contents = currentPage.contents;
 
         let replaceNdx = -1;
 
@@ -265,7 +268,6 @@ class App extends Component {
         this.setState({
           isEditing: false,
           isPreviewMode: false,
-          shadowPage: {},
           currentPage: newPage,
           pages: newPages
         });
@@ -280,15 +282,13 @@ class App extends Component {
     // loading, don't clobber that state
 
     this.setState({
-      currentPage: {},
-      shadowPage: {},
+      currentPage: createEmptyPage(),
       isEditing: true
     })
   }
 
   onCancelUpdate(){
     this.setState({
-      shadowPage: {},
       isPreviewMode: false,
       isEditing: false
     });
@@ -329,14 +329,6 @@ class App extends Component {
   onHideAlert(){
     this.setState({
       showAlert: false
-    });
-  }
-
-  onUpdateShadowPage(newPage){
-    console.log(newPage.title);
-    console.log(newPage.contents);
-    this.setState({
-      shadowPage: Object.assign({}, newPage)
     });
   }
 
@@ -387,12 +379,30 @@ class App extends Component {
     }
   }
 
-  onUserTyping(markdown){
-    console.log(`onUserTyping: got ${markdown}`);
+  onUserTyping(pageUpdate){
+    console.log('onUserTyping: got', pageUpdate);
+    this.setState({
+      currentPage: Object.assign({},
+                                 this.state.currentPage,
+                                 pageUpdate)
+    })
+    console.log('Updated page to', this.state.currentPage);
+  }
+
+  onSaveClick(e){
+    e.preventDefault();
+
+    if (this.state.currentPage.key) {
+      this.onUpdatePage();
+    } else {
+      this.onCreatePage();
+    }
+
+    return false;
   }
 
   render(){
-    let { pages, currentPage, shadowPage, isLoading, isEditing } = this.state;
+    let { pages, currentPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
@@ -448,8 +458,6 @@ class App extends Component {
               {isLoading && <Throbber/> }
               {/*!isLoading && <WikiContainer
                                 page={currentPage}
-                                shadowPage={shadowPage}
-                                onUpdateShadowPage={this.onUpdateShadowPage}
                                 isEditing={isEditing}
                                 isPreviewMode={isPreviewMode}
                                 onTogglePreviewMode={this.onTogglePreviewMode}
@@ -458,6 +466,9 @@ class App extends Component {
                                 onCreatePage={this.onCreatePage}
                                 onUpdatePage={this.onUpdatePage}/>*/}
               {!isLoading && <RichTextWidget
+                               page={currentPage}
+                               value={currentPage.contents}
+                               onSaveClick={this.onSaveClick}
                                onChange={this.onUserTyping} />}
             </div>
           </main>

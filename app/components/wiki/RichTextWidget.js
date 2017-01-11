@@ -6,40 +6,38 @@ import autobind from 'class-autobind';
 import type {EditorValue} from 'react-rte-imagesupport';
 
 type Props = {};
-type State = {
-  value: EditorValue;
-  format: string;
-  readOnly: boolean;
-};
 
 export default class RichTextWidget extends Component {
   props: Props;
-  state: State;
 
   constructor() {
     super(...arguments);
     autobind(this);
-    this.state = {
-      value: createEmptyValue(),
-      format: 'markdown',
-      readOnly: false,
-    };
   }
 
   render() {
-    let {value, format} = this.state;
+    let { page, onSaveClick } = this.props;
+
+    let title = page.title || '';
+    let readOnly = page.key ? true : false;
 
     return (
       <div className="editor">
+        <div className="toolbar">
+          <button className="btn btn-primary" onClick={onSaveClick}>Save</button>
+        </div>
+        <div className="form-group page-title-bar" ref="page_title">
+          <label>Title</label>
+          <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} onChange={this._onChangeTitle}/>
+        </div>
         <div className="row">
           <RichTextEditor
-            value={value}
+            value={this.props.value}
             onChange={this._onChange}
             className="react-rte"
             placeholder="Tell a story"
             toolbarClassName="rte-toolbar"
             editorClassName="rte-editor"
-            readOnly={this.state.readOnly}
           />
         </div>
       </div>
@@ -47,12 +45,15 @@ export default class RichTextWidget extends Component {
   }
 
   _onChange(value: EditorValue) {
-    this.setState({value});
+    this.props.onChange({
+      contents: value
+    });
+  }
 
-    if (this.props.onChange) {
-      this.props.onChange(
-        value.toString('markdown')
-      );
-    }
+  _onChangeTitle(e) {
+    let newTitle = e.target.value;
+    this.props.onChange({
+      title: newTitle
+    });
   }
 }
