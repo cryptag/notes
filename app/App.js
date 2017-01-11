@@ -40,7 +40,6 @@ class App extends Component {
       username: username,
       showUsernameModal: false,
       isLoading: true,
-      isEditing: false,
       showAlert: true,
       alertMessage: 'Welcome to CrypTag Notes!',
       isPreviewMode: false
@@ -88,7 +87,6 @@ class App extends Component {
   componentDidMount(){
     this.loadUsername();
     this.loadBackends();
-    this.setState({isEditing: true});
     this.pollForPages();
   }
 
@@ -128,7 +126,6 @@ class App extends Component {
     this.setState({
       currentBackendName: backendName,
       currentPage: createEmptyPage(),
-      isEditing: true
     });
     this.loadPageList(backendName);
   }
@@ -156,7 +153,6 @@ class App extends Component {
         currentPage: createEmptyPage(),
         pages: [],
         isLoading: false,
-        isEditing: true
       });
     });
   }
@@ -164,7 +160,6 @@ class App extends Component {
   loadPageByKey(pageKey){
     this.setState({
       isLoading: true,
-      isEditing: false
     });
     // TODO: Get pages from all Backends, not just the current/default
     let backend = this.state.currentBackendName;
@@ -185,7 +180,6 @@ class App extends Component {
       this.setState({
         currentPage: createEmptyPage(),
         isLoading: false,
-        isEditing: true
       });
     })
   }
@@ -202,7 +196,6 @@ class App extends Component {
     console.log('editing!')
     let { currentPage } = this.state;
     this.setState({
-      isEditing: true,
       isPreviewMode: false
     });
   }
@@ -223,7 +216,6 @@ class App extends Component {
         newPage.contents = currentPage.contents;
 
         this.setState({
-          isEditing: false,
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
@@ -266,7 +258,6 @@ class App extends Component {
         }
 
         this.setState({
-          isEditing: false,
           isPreviewMode: false,
           currentPage: newPage,
           pages: newPages
@@ -283,14 +274,12 @@ class App extends Component {
 
     this.setState({
       currentPage: createEmptyPage(),
-      isEditing: true
     })
   }
 
   onCancelUpdate(){
     this.setState({
       isPreviewMode: false,
-      isEditing: false
     });
   }
 
@@ -402,7 +391,7 @@ class App extends Component {
   }
 
   render(){
-    let { pages, currentPage, isLoading, isEditing } = this.state;
+    let { pages, currentPage, isLoading } = this.state;
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
@@ -458,7 +447,6 @@ class App extends Component {
               {isLoading && <Throbber/> }
               {/*!isLoading && <WikiContainer
                                 page={currentPage}
-                                isEditing={isEditing}
                                 isPreviewMode={isPreviewMode}
                                 onTogglePreviewMode={this.onTogglePreviewMode}
                                 onEditPage={this.onEditPage}
