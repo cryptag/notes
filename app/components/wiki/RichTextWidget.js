@@ -28,7 +28,7 @@ export default class RichTextWidget extends Component {
         </div>
         <div className="form-group page-title-bar" ref="page_title">
           <label>Title</label>
-          <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} onChange={this._onChangeTitle}/>
+          <input className="form-control" value={title} placeholder="Enter page title" readOnly={readOnly} onChange={this._onChangeTitle}/>
         </div>
         <div className="row">
           <RichTextEditor
