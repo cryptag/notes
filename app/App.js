@@ -42,7 +42,6 @@ class App extends Component {
       isLoading: true,
       showAlert: true,
       alertMessage: 'Welcome to CrypTag Notes!',
-      isPreviewMode: false
     };
 
     this.loadPageList = this.loadPageList.bind(this);
@@ -51,7 +50,6 @@ class App extends Component {
 
     this.onCreatePage = this.onCreatePage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
-    this.onCancelUpdate = this.onCancelUpdate.bind(this);
     this.onBlankPageClick = this.onBlankPageClick.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
@@ -62,8 +60,6 @@ class App extends Component {
     this.onSetBackend = this.onSetBackend.bind(this);
 
     this.onHideAlert = this.onHideAlert.bind(this);
-
-    this.onTogglePreviewMode = this.onTogglePreviewMode.bind(this);
 
     this.onUserTyping = this.onUserTyping.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
@@ -253,7 +249,6 @@ class App extends Component {
         }
 
         this.setState({
-          isPreviewMode: false,
           currentPage: newPage,
           pages: newPages
         });
@@ -270,12 +265,6 @@ class App extends Component {
     this.setState({
       currentPage: createEmptyPage(),
     })
-  }
-
-  onCancelUpdate(){
-    this.setState({
-      isPreviewMode: false,
-    });
   }
 
   onCloseUsernameModal(){
@@ -313,12 +302,6 @@ class App extends Component {
   onHideAlert(){
     this.setState({
       showAlert: false
-    });
-  }
-
-  onTogglePreviewMode(previewMode){
-    this.setState({
-      isPreviewMode: previewMode
     });
   }
 
@@ -389,7 +372,6 @@ class App extends Component {
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
-    let { isPreviewMode, onTogglePreviewMode } = this.state;
     // still ironing out the contract of the alert component
     // hacking for now.
     let autodismiss = true;
@@ -441,9 +423,6 @@ class App extends Component {
               {isLoading && <Throbber/> }
               {/*!isLoading && <WikiContainer
                                 page={currentPage}
-                                isPreviewMode={isPreviewMode}
-                                onTogglePreviewMode={this.onTogglePreviewMode}
-                                onCancelUpdate={this.onCancelUpdate}
                                 onCreatePage={this.onCreatePage}
                                 onUpdatePage={this.onUpdatePage}/>*/}
               {!isLoading && <RichTextWidget
