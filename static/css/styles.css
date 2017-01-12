@@ -23,8 +23,10 @@ main {
   border: none;
   padding: 0px 15px; }
 
-.page-content .react-rte {
-  width: 100%; }
+.public-DraftStyleDefault-block {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.25em;
+}
 
 .form-group .form-control {
   font-size: 1em;
