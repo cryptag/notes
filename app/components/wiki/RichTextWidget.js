@@ -22,7 +22,7 @@ export default class RichTextWidget extends Component {
     let readOnly = page.key ? true : false;
 
     return (
-      <div className="editor">
+      <div className="wiki-page wiki-page-edit">
         <div className="toolbar">
           <button className="btn btn-primary" onClick={onSaveClick}>Save</button>
         </div>
@@ -30,12 +30,12 @@ export default class RichTextWidget extends Component {
           <label>Title</label>
           <input className="form-control" value={title} placeholder="Enter page title" readOnly={readOnly} onChange={this._onChangeTitle}/>
         </div>
-        <div className="row">
+        <div className="row page-content">
           <RichTextEditor
             value={this.props.value}
             onChange={this._onChange}
             className="react-rte"
-            placeholder="Tell a story"
+            placeholder="Enter note here!"
             toolbarClassName="rte-toolbar"
             editorClassName="rte-editor"
           />

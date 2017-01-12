@@ -21,7 +21,10 @@ main {
 
 .wiki-page-edit .page-content {
   border: none;
-  padding: 0px; }
+  padding: 0px 15px; }
+
+.page-content .react-rte {
+  width: 100%; }
 
 .form-group label {
   text-transform: uppercase;
@@ -61,10 +64,6 @@ main {
 
 .wiki-page-view {
   padding: 0em 1em; }
-
-.page-content textarea {
-    height: 550px;
-    width: 800px; }
 
 .alert-container {
   position: fixed;
