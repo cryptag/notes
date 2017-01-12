@@ -27,7 +27,6 @@ export default class RichTextWidget extends Component {
           <button className="btn btn-primary" onClick={onSaveClick}>Save</button>
         </div>
         <div className="form-group page-title-bar" ref="page_title">
-          <label>Title</label>
           <input className="form-control" value={title} placeholder="Enter page title" readOnly={readOnly} onChange={this._onChangeTitle}/>
         </div>
         <div className="row page-content">

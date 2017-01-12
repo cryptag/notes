@@ -17,7 +17,7 @@ main {
   .wiki-page .toolbar {
     text-align: right; }
     .wiki-page .toolbar button {
-      margin-left: 15px; }
+      margin-bottom: 10px; }
 
 .wiki-page-edit .page-content {
   border: none;
@@ -25,10 +25,6 @@ main {
 
 .page-content .react-rte {
   width: 100%; }
-
-.form-group label {
-  text-transform: uppercase;
-  color: #333; }
 
 .form-group .form-control {
   font-size: 1em;
