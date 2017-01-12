@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 
 import ReactMarkdown from 'react-markdown';
+import {SimpleMarkdownEditor} from 'react-simple-markdown-editor';
 import { Nav, NavItem, MenuItem, NavDropdown } from 'react-bootstrap';
 
 class WikiPageEdit extends Component {
@@ -92,7 +93,8 @@ class WikiPageEdit extends Component {
           </Nav>
           <div className="form-group page-content" ref="page_content">
             {isPreviewMode && <ReactMarkdown className="wiki-page-view" source={content} escapeHtml={true} />}
-            {!isPreviewMode && <textarea className="form-control" defaultValue={content} onChange={this.onUpdateContent}></textarea>}
+            {!isPreviewMode && <SimpleMarkdownEditor textAreaID={"main-editor"} />}
+            {!isPreviewMode && <textarea id="main-editor" className="form-control" defaultValue={content} onChange={this.onUpdateContent}></textarea>}
           </div>
         </form>
       </div>
