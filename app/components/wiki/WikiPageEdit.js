@@ -86,7 +86,7 @@ class WikiPageEdit extends Component {
           </div>
           <div className="form-group page-title-bar" ref="page_title">
             <label>Title</label>
-            <input className="form-control" defaultValue={title} placeholder="Enter page title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
+            <input className="form-control" value={title} placeholder="Enter page title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
             <NavItem eventKey="1">Edit</NavItem>
