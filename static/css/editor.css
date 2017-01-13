@@ -2,13 +2,6 @@
 // Copied from https://jedwatson.github.io/react-md-editor/example.css
 // -------------------
 */
-body {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
 a {
   color: #08c;
   text-decoration: none;
@@ -21,23 +14,6 @@ a:hover {
   margin-right: auto;
   max-width: 1080px;
   padding: 1em;
-}
-.footer {
-  margin-top: 20px;
-  border-top: 1px solid #eee;
-  padding: 20px 0;
-  font-size: 12px;
-  color: #999;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: #222;
-  font-weight: 100;
-  margin: 0.5em 0;
 }
 label {
   color: #999;
@@ -139,8 +115,7 @@ blockquote {
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
-  font-family: monospace;
-  height: 300px;
+  height: 550px;
   color: black;
 }
 

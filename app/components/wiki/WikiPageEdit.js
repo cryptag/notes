@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 
 import ReactMarkdown from 'react-markdown';
+import Editor from 'react-md-editor';
 import { Nav, NavItem, MenuItem, NavDropdown } from 'react-bootstrap';
 
 class WikiPageEdit extends Component {
@@ -45,12 +46,11 @@ class WikiPageEdit extends Component {
     this.props.onTogglePreviewMode(eventKey === "2" ? true : false);
   }
 
-  onUpdateContent(event){
-    event.preventDefault();
+  onUpdateContent(newContents){
     let { shadowPage, onUpdateShadowPage } = this.props;
     let newPage = Object.assign({},
                                 shadowPage,
-                                {'contents': event.target.value });
+                                {'contents': newContents });
     onUpdateShadowPage(newPage);
   }
 
@@ -75,6 +75,8 @@ class WikiPageEdit extends Component {
     let readOnly = shadowPage.key ? true : false;
     let activeKey = isPreviewMode ? "2" : "1";
 
+    let editorOptions = {lineWrapping: true};
+
     return (
       <div className="wiki-page wiki-page-edit">
         <form>
@@ -92,7 +94,7 @@ class WikiPageEdit extends Component {
           </Nav>
           <div className="form-group page-content" ref="page_content">
             {isPreviewMode && <ReactMarkdown className="wiki-page-view" source={content} escapeHtml={true} />}
-            {!isPreviewMode && <textarea className="form-control" defaultValue={content} onChange={this.onUpdateContent}></textarea>}
+            {!isPreviewMode && <Editor className="form-control wiki-page-edit-component" value={content} onChange={this.onUpdateContent} options={editorOptions} />}
           </div>
         </form>
       </div>
