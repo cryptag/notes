@@ -25,6 +25,9 @@ main {
   border: none;
   padding: 0px; }
 
+.wiki-page-edit button {
+  margin-bottom: 10px; }
+
 .form-group label {
   text-transform: uppercase;
   color: #333; }
