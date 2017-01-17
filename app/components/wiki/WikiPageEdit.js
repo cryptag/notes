@@ -75,7 +75,8 @@ class WikiPageEdit extends Component {
     let readOnly = shadowPage.key ? true : false;
     let activeKey = isPreviewMode ? "2" : "1";
 
-    let editorOptions = {lineWrapping: true};
+    let editorOptions = {lineWrapping: true, tabSize: 4};
+    // TODO: Figure out why `indentWithTabs: false` isn't changing anything
 
     return (
       <div className="wiki-page wiki-page-edit">
