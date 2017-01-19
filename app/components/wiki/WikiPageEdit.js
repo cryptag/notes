@@ -16,6 +16,10 @@ class WikiPageEdit extends Component {
     this.onUpdateTitle = this.onUpdateTitle.bind(this);
   }
 
+  componentDidMount(){
+    $(findDOMNode(this.refs.page_title)).find('input').focus();
+  }
+
   onSaveClick(e){
     // TODO: move this logic up to App.js
     // send 'save' message to App, have update / create occur 
