@@ -6,8 +6,6 @@ import { Alert } from 'react-bootstrap';
 class AlertContainer extends Component {
   constructor(props){
     super(props);
-
-    setTimeout(this.props.onAlertDismiss, 2000);
   }
 
   render(){
@@ -18,7 +16,7 @@ class AlertContainer extends Component {
 
     return (
       <div className="alert-container" ref="alert_container">
-        {showAlert && <Alert bsStyle={alertStyle} onDismiss={this.props.onAlertDismiss}>
+        {showAlert && <Alert className={alertStyle} onDismiss={this.props.onAlertDismiss}>
           {message}
         </Alert>}
       </div>  

@@ -97,7 +97,7 @@ class App extends Component {
     this.setState({
       showAlert: true,
       alertMessage: errStr,
-      alertStyle: 'error'
+      alertStyle: 'error' // Changing this changes nothing...
     })
   }
 
@@ -167,7 +167,7 @@ class App extends Component {
         isEditing: true
       });
 
-      this.onError("Error loading page list: " + err);
+      this.onError(`Error loading notes list: ${err}. (Make sure cryptagd is running!)`);
     });
   }
 
@@ -181,7 +181,7 @@ class App extends Component {
     getPagesVersionedLatest(backend, [pageKey]).then( (response) => {
       let pages = formatPages(response);
       if (pages.length === 0) {
-        this.onError(`Error fetching row with ID tag '${pageKey}' from Backend ${backend}`);
+        this.onError(`Error fetching note with ID tag '${pageKey}' from Backend ${backend}`);
         return;
       }
 
@@ -240,7 +240,7 @@ class App extends Component {
         this.onSaveSuccess(1500);
       })
       .catch((err) => {
-        this.onError(`Error creating new page with title "${shadowPage.title}"; error: ${err}`);
+        this.onError(`Error creating new note with title "${shadowPage.title}"; error: ${err}`);
       });
   }
 
@@ -284,7 +284,7 @@ class App extends Component {
 
       })
       .catch((err) => {
-        this.onError(`Error updating page with ID-tag, '${currentPage.key}'; error: ${err}`);
+        this.onError(`Error updating note with ID-tag '${currentPage.key}'; error: ${err}`);
       });
   }
 
