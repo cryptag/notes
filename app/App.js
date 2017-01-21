@@ -50,6 +50,8 @@ class App extends Component {
     this.onUpdatePage = this.onUpdatePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
     this.onBlankPageClick = this.onBlankPageClick.bind(this);
+    this.onSaveClick = this.onSaveClick.bind(this);
+    this.onCancelClick = this.onCancelClick.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
     this.onCloseUsernameModal = this.onCloseUsernameModal.bind(this);
@@ -218,7 +220,6 @@ class App extends Component {
         newPage.contents = shadowPage.contents;
 
         this.setState({
-          isEditing: false,
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
@@ -261,9 +262,6 @@ class App extends Component {
         }
 
         this.setState({
-          isEditing: false,
-          isPreviewMode: false,
-          shadowPage: {},
           currentPage: newPage,
           pages: newPages
         });
@@ -290,6 +288,25 @@ class App extends Component {
       isPreviewMode: false,
       isEditing: false
     });
+  }
+
+  onCancelClick(e){
+    e.preventDefault();
+    this.onCancelUpdate();
+
+    return false;
+  }
+
+  onSaveClick(e){
+    e.preventDefault();
+
+    if (this.state.currentPage.key) {
+      this.onUpdatePage();
+    } else {
+      this.onCreatePage();
+    }
+
+    return false;
   }
 
   onCloseUsernameModal(){
@@ -324,7 +341,7 @@ class App extends Component {
     this.onSetBackend(newBackendName);
   }
 
-  onHideAlert(){
+  onHideAlert(e){
     this.setState({
       showAlert: false
     });
@@ -402,7 +419,7 @@ class App extends Component {
           alertStyle={alertStyle}
           showAlert={showAlert}
           autodismiss={autodismiss}
-          onHideAlert={this.onHideAlert} />
+          onAlertDismiss={this.onHideAlert} />
 
         <div className="side-content">
           <h1>CrypTag Notes</h1>
@@ -449,8 +466,8 @@ class App extends Component {
                                 onTogglePreviewMode={this.onTogglePreviewMode}
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
-                                onCreatePage={this.onCreatePage}
-                                onUpdatePage={this.onUpdatePage}/>}
+                                onSaveClick={this.onSaveClick}
+                                onCancelClick={this.onCancelClick} />}
             </div>
           </main>
         </div>

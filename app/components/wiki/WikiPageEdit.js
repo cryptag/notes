@@ -9,8 +9,6 @@ class WikiPageEdit extends Component {
   constructor(){
     super(...arguments);
 
-    this.onSaveClick = this.onSaveClick.bind(this);
-    this.onCancelClick = this.onCancelClick.bind(this);
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onUpdateContent = this.onUpdateContent.bind(this);
     this.onUpdateTitle = this.onUpdateTitle.bind(this);
@@ -18,32 +16,6 @@ class WikiPageEdit extends Component {
 
   componentDidMount(){
     $(findDOMNode(this.refs.page_title)).find('input').focus();
-  }
-
-  onSaveClick(e){
-    // TODO: move this logic up to App.js
-    // send 'save' message to App, have update / create occur 
-    // by cloning from shadowPage.
-    e.preventDefault();
-    let { onUpdatePage, onCreatePage, page } = this.props;
-
-    if (page.key) {
-      onUpdatePage();
-    } else {
-      let tags = [];
-      let title = $(findDOMNode(this.refs.page_title)).find('input').val();
-      let content = $(findDOMNode(this.refs.page_content)).find('textarea').val();;
-      // TODO: Allow user to set custom tags
-      onCreatePage(title, content, tags);
-    }
-
-    return false;
-  }
-
-  onCancelClick(e){
-    e.preventDefault();
-    this.props.onCancelUpdate();
-    return false;
   }
 
   onChangeEditMode(eventKey){
@@ -70,7 +42,7 @@ class WikiPageEdit extends Component {
   }
 
   render(){
-    let { shadowPage, isPreviewMode } = this.props;
+    let { shadowPage, isPreviewMode, onSaveClick, onCancelClick } = this.props;
     let title = shadowPage.title || "";
     let content = shadowPage.contents || "";
 
@@ -86,8 +58,8 @@ class WikiPageEdit extends Component {
       <div className="wiki-page wiki-page-edit">
         <form>
           <div className="toolbar">
-            <button className="btn btn-primary" onClick={this.onSaveClick}>Save</button>
-            <button className="btn btn-default" onClick={this.onCancelClick}>Cancel</button>
+            <button className="btn btn-primary" onClick={onSaveClick}>Save</button>
+            <button className="btn btn-default" onClick={onCancelClick}>Cancel</button>
           </div>
           <div className="form-group page-title-bar" ref="page_title">
             <input className="form-control" value={title} placeholder="Enter note title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
@@ -112,8 +84,8 @@ WikiPageEdit.propTypes = {
   isPreviewMode: PropTypes.bool.isRequired,
   onTogglePreviewMode: PropTypes.func.isRequired,
   onUpdateShadowPage: PropTypes.func.isRequired,
-  onUpdatePage: PropTypes.func.isRequired,
-  onCancelUpdate: PropTypes.func.isRequired
+  onSaveClick: PropTypes.func.isRequired,
+  onCancelClick: PropTypes.func.isRequired
 }
 
 export default WikiPageEdit;
