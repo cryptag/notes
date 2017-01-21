@@ -91,6 +91,16 @@ class App extends Component {
     this.pollForPages();
   }
 
+  onError(errStr) {
+    console.log(errStr);
+
+    this.setState({
+      showAlert: true,
+      alertMessage: errStr,
+      alertStyle: 'error'
+    })
+  }
+
   // failure case #1: what if backends don't load?
   // UI?
   loadBackends(){
@@ -117,7 +127,8 @@ class App extends Component {
       }
 
     }).catch((err) => {
-      console.log("Error fetching backends: " + err);
+      this.onError("Error fetching backends: " + err);
+
       this.loadPageList('');
     });
   }
@@ -145,8 +156,6 @@ class App extends Component {
         isLoading: false
       });
     }).catch((err) => {
-      console.log("Error loading page list: " + err);
-
       // Would probably be better to revert to previous backend and
       // continue showing its pages list, but this is a quick fix that
       // keeps the selected backend and the pages list in sync
@@ -157,6 +166,8 @@ class App extends Component {
         isLoading: false,
         isEditing: true
       });
+
+      this.onError("Error loading page list: " + err);
     });
   }
 
@@ -170,8 +181,7 @@ class App extends Component {
     getPagesVersionedLatest(backend, [pageKey]).then( (response) => {
       let pages = formatPages(response);
       if (pages.length === 0) {
-        console.log("Error fetching row with ID tag", pageKey, "from Backend",
-                    backend);
+        this.onError(`Error fetching row with ID tag '${pageKey}' from Backend ${backend}`);
         return;
       }
 
@@ -180,12 +190,13 @@ class App extends Component {
         isLoading: false
       });
     }).catch((err) => {
-      console.log("Error from getPagesVersionedLatest:", err)
       this.setState({
         currentPage: {},
         isLoading: false,
         isEditing: true
       });
+
+      this.onError("Error from getPagesVersionedLatest: " + err);
     })
   }
 
@@ -229,12 +240,12 @@ class App extends Component {
         this.onSaveSuccess(1500);
       })
       .catch((err) => {
-        console.log("Error creating new page with title", shadowPage.title, ";", err);
+        this.onError(`Error creating new page with title "${shadowPage.title}"; error: ${err}`);
       });
   }
 
   onUpdatePage(){
-    console.log('saving!');
+    console.log('updating!');
     let { shadowPage, currentPage, currentBackendName } = this.state;
 
     updatePage(currentPage.key, shadowPage.title, shadowPage.contents, currentBackendName)
@@ -273,7 +284,7 @@ class App extends Component {
 
       })
       .catch((err) => {
-        console.log("Error updating page with ID-tag", currentPage.key, ";", err);
+        this.onError(`Error updating page with ID-tag, '${currentPage.key}'; error: ${err}`);
       });
   }
 
@@ -394,7 +405,7 @@ class App extends Component {
 
     mkdirp(backendsDir, (err) => {
       if (err) {
-        console.error('Error creating ~/.cryptag/backends --', err);
+        console.log('Error creating ~/.cryptag/backends --', err);
       }
     });
 
