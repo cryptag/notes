@@ -21,6 +21,7 @@ class WikiContainer extends Component {
         {isEditing && <WikiPageEdit page={page}
                         shadowPage={shadowPage}
                         isPreviewMode={isPreviewMode}
+                        saveSuccess={saveSuccess}
                         onTogglePreviewMode={onTogglePreviewMode}
                         onUpdateShadowPage={onUpdateShadowPage}
                         onCancelClick={onCancelClick}

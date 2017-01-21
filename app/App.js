@@ -35,8 +35,10 @@ class App extends Component {
       showUsernameModal: false,
       isLoading: true,
       isEditing: false,
-      showAlert: true,
+      showAlert: false,
+      saveSuccess: false,
       alertMessage: 'Welcome to CrypTag Notes!',
+      alertStyle: 'success',
       shadowPage: {},
       isPreviewMode: false
     };
@@ -51,6 +53,7 @@ class App extends Component {
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
     this.onBlankPageClick = this.onBlankPageClick.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
+    this.onSaveSuccess = this.onSaveSuccess.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
@@ -223,6 +226,7 @@ class App extends Component {
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
+        this.onSaveSuccess(1500);
       })
       .catch((err) => {
         console.log("Error creating new page with title", shadowPage.title, ";", err);
@@ -265,6 +269,8 @@ class App extends Component {
           currentPage: newPage,
           pages: newPages
         });
+        this.onSaveSuccess(1500);
+
       })
       .catch((err) => {
         console.log("Error updating page with ID-tag", currentPage.key, ";", err);
@@ -307,6 +313,18 @@ class App extends Component {
     }
 
     return false;
+  }
+
+  onSaveSuccess(delay){
+    this.setState({
+      saveSuccess: true
+    });
+
+    setTimeout(() => {
+      this.setState({
+        saveSuccess: false
+      });
+    }, delay)
   }
 
   onCloseUsernameModal(){
@@ -408,9 +426,7 @@ class App extends Component {
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
     let { isPreviewMode, onTogglePreviewMode } = this.state;
-    // still ironing out the contract of the alert component
-    // hacking for now.
-    let autodismiss = true;
+    let { saveSuccess } = this.state;
 
     return (
       <div>
@@ -418,7 +434,6 @@ class App extends Component {
           message={alertMessage}
           alertStyle={alertStyle}
           showAlert={showAlert}
-          autodismiss={autodismiss}
           onAlertDismiss={this.onHideAlert} />
 
         <div className="side-content">
@@ -463,6 +478,7 @@ class App extends Component {
                                 onUpdateShadowPage={this.onUpdateShadowPage}
                                 isEditing={isEditing}
                                 isPreviewMode={isPreviewMode}
+                                saveSuccess={saveSuccess}
                                 onTogglePreviewMode={this.onTogglePreviewMode}
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
