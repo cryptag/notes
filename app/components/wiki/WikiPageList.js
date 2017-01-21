@@ -15,7 +15,7 @@ class WikiPageList extends Component {
     return (
       <div className="pages">
         <div className="row">
-          <h3 className="pull-left">Pages</h3>
+          <h3 className="pull-left">Notes</h3>
           <button className="btn btn-primary pull-right" onClick={onBlankPageClick}>+</button>
         </div>
         <ul>
