@@ -20,6 +20,8 @@ import UsernameModal from './components/modals/Username';
 const USERNAME_KEY = 'username';
 const BACKEND_KEY = 'current_backend';
 
+const errNoNotesFound = 'No notes found in this Backend. Create a note, or try another Backend!';
+
 class App extends Component {
   constructor(){
     super(...arguments);
@@ -153,7 +155,9 @@ class App extends Component {
 
       this.setState({
         pages: pages,
-        isLoading: false
+        isLoading: false,
+        showAlert: false,
+        alertMessage: ''
       });
     }).catch((err) => {
       // Would probably be better to revert to previous backend and
@@ -166,6 +170,15 @@ class App extends Component {
         isLoading: false,
         isEditing: true
       });
+
+      if (err.message.toLowerCase().includes('not found')) {
+        if (this.state.alertMessage === errNoNotesFound){
+          // Don't keep bugging the user
+          return;
+        }
+        this.onError(errNoNotesFound);
+        return;
+      }
 
       this.onError(`Error loading notes list: ${err}. (Make sure cryptagd is running!)`);
     });

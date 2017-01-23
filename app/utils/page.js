@@ -5,6 +5,9 @@ const atob = require('atob');
 
 
 export function formatPages(rawPages){
+  if (rawPages instanceof Error){
+    throw rawPages;
+  }
   let pages = rawPages.map(row => formatPage(row));
   return pages.sort(sortRowByCreatedDescending);
 }
