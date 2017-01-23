@@ -4,6 +4,7 @@ import os from 'os';
 import path from 'path';
 
 import React, { Component } from 'react';
+import {HotKeys} from 'react-hotkeys';
 
 import { getBackends } from './data/general/backend';
 import { listPagesVersionedLatest, getPagesVersionedLatest, updatePage, createPage } from './data/wiki/pages';
@@ -21,6 +22,10 @@ const USERNAME_KEY = 'username';
 const BACKEND_KEY = 'current_backend';
 
 const errNoNotesFound = 'No notes found in this Backend. Create a note, or try another Backend!';
+
+let wikiContainerKeyMap = {
+  'saveNote': 'mod+s'
+}
 
 class App extends Component {
   constructor(){
@@ -444,6 +449,12 @@ class App extends Component {
     }
   }
 
+  hotkeyHandlers() {
+    return {
+      'saveNote': this.onSaveClick
+    }
+  }
+
   render(){
     let { pages, currentPage, shadowPage, isLoading, isEditing } = this.state;
     let { username, showUsernameModal } = this.state;
@@ -495,6 +506,7 @@ class App extends Component {
         <div className="main-content">
           <main>
             <div className="wiki-container">
+             <HotKeys keyMap={wikiContainerKeyMap} handlers={this.hotkeyHandlers()}>
               {isLoading && <Throbber/> }
               {!isLoading && <WikiContainer
                                 page={currentPage}
@@ -508,6 +520,7 @@ class App extends Component {
                                 onCancelUpdate={this.onCancelUpdate}
                                 onSaveClick={this.onSaveClick}
                                 onCancelClick={this.onCancelClick} />}
+             </HotKeys>
             </div>
           </main>
         </div>
