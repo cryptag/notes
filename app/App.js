@@ -440,7 +440,7 @@ class App extends Component {
     let { saveSuccess } = this.state;
 
     return (
-      <div>
+      <div className="app">
         <AlertContainer
           message={alertMessage}
           alertStyle={alertStyle}

@@ -40,13 +40,16 @@ body {
 .btn-primary:hover {
   background-color: #1e202f; }
 
-.main-content,
-.side-content {
-  float: left;
-  box-sizing: border-box;
-  padding: 15px; }
+.app {
+  display: flex; }
+
+.main-content {
+  padding: 15px;
+  width: 80%;
+}
 
 .side-content {
+  padding: 15px;
   width: 20%;
   color: #978de3; }
   .side-content a,
