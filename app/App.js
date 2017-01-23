@@ -26,6 +26,9 @@ const errNoNotesFound = 'No notes found in this Backend. Create a note, or try a
 let wikiContainerKeyMap = {
   'saveNote': 'mod+s'
 }
+let appKeyMap = {
+  'newNote': 'mod+n'
+}
 
 class App extends Component {
   constructor(){
@@ -451,6 +454,7 @@ class App extends Component {
 
   hotkeyHandlers() {
     return {
+      'newNote': this.onBlankPageClick,
       'saveNote': this.onSaveClick
     }
   }
@@ -464,6 +468,7 @@ class App extends Component {
     let { saveSuccess } = this.state;
 
     return (
+     <HotKeys keyMap={appKeyMap} handlers={this.hotkeyHandlers()}>
       <div className="app">
         <AlertContainer
           message={alertMessage}
@@ -525,6 +530,7 @@ class App extends Component {
           </main>
         </div>
       </div>
+     </HotKeys>
     );
   }
 }
