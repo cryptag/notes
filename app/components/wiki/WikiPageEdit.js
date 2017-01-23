@@ -59,7 +59,7 @@ class WikiPageEdit extends Component {
         <form>
           <div className="toolbar">
             {!saveSuccess && <button className="btn btn-primary" onClick={onSaveClick}>Save</button>}
-            {saveSuccess && <button className="btn btn-primary" onClick={onSaveClick}>Saved!</button>}
+            {saveSuccess && <button className="btn btn-primary-success" onClick={onSaveClick}>Saved!</button>}
             <button className="btn btn-default" onClick={onCancelClick}>Cancel</button>
           </div>
           <div className="form-group page-title-bar" ref="page_title">

@@ -40,6 +40,11 @@ body {
 .btn-primary:hover {
   background-color: #1e202f; }
 
+.btn-primary-success {
+  color: #fff;
+  background-color: #00cc5f;
+  border: solid 1px #ccc; }
+
 .app {
   display: flex; }
 

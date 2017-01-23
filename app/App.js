@@ -237,7 +237,7 @@ class App extends Component {
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
-        this.onSaveSuccess(1500);
+        this.onSaveSuccess(500);
       })
       .catch((err) => {
         this.onError(`Error creating new note with title "${shadowPage.title}"; error: ${err}`);
@@ -280,7 +280,7 @@ class App extends Component {
           currentPage: newPage,
           pages: newPages
         });
-        this.onSaveSuccess(1500);
+        this.onSaveSuccess(500);
 
       })
       .catch((err) => {
