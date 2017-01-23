@@ -60,6 +60,13 @@ main {
     text-decoration: underline;
     text-decoration-style: dashed; }
 
+.flex-label-element {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .main-content {
   width: 80%;
   background-color: #fff; }
