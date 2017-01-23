@@ -9,9 +9,6 @@ body {
   font-size: 200%;
   background-color: #1e202f; }
 
-main {
-  height: 100vh; }
-
 .wiki-page {
   margin-bottom: 15px; }
   .wiki-page pre > code {
