@@ -15,7 +15,23 @@ class WikiPageEdit extends Component {
   }
 
   componentDidMount(){
+    // By default, title has focus
     $(findDOMNode(this.refs.page_title)).find('input').focus();
+
+    let {isPreviewMode, shadowPage } = this.props;
+
+    this.props.onTogglePreviewMode(isPreviewMode);
+
+    // ...but if the title already set, the body should get focus
+    if (!isPreviewMode && shadowPage.key){
+      $('.MDEditor_editor .CodeMirror').find('textarea').focus();
+    }
+
+    // Let user <tab> directly from note title to body without
+    // focusing on the editor toolbar buttons in between. This jQuery
+    // hack is Seemingly necessary since we can't directly set
+    // attributes on child elements of <Editor /> AFAICT.
+    $('.MDEditor_toolbarButton').attr('tabindex', -1);
   }
 
   onChangeEditMode(eventKey){
@@ -67,8 +83,8 @@ class WikiPageEdit extends Component {
             <input className="form-control" value={title} placeholder="Enter note title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
-            <NavItem eventKey="1">Edit</NavItem>
-            <NavItem eventKey="2">Preview</NavItem>
+            <NavItem tabIndex="-1" eventKey="1">Edit</NavItem>
+            <NavItem tabIndex="-1" eventKey="2">Preview</NavItem>
           </Nav>
           <div className="form-group page-content" ref="page_content">
             {isPreviewMode && <ReactMarkdown className="wiki-page-view" source={content} escapeHtml={true} />}
