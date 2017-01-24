@@ -45,6 +45,11 @@ body {
   background-color: #00cc5f;
   border: solid 1px #ccc; }
 
+.btn-primary-dangerous {
+  color: #fff;
+  background-color: #cc0007;
+  border: solid 1px #ccc; }
+
 .app {
   display: flex; }
 

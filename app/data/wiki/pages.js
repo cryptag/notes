@@ -35,6 +35,24 @@ export function createPage(title, contents, tags, backendName){
   return reqPost('/rows', row, backendName);
 }
 
+export function deletePagesByVersionID(versionID, backendName){
+  // versionID is of the form 'id:...'
+  let childVersionID = 'origversionrow:' + versionID;
+
+  let origRow = {plaintags: [versionID]};
+  let versionedRows = {plaintags: [childVersionID]};
+  return reqPost('/rows/delete', origRow, backendName)
+        .then(resp => {
+          if (resp.error === '' || resp.status === 201 || resp.status === 404){
+            return resp;
+          }
+          throw new Error(`Got response of ${resp.status}, wanted 201`);
+        })
+        .then(() => {
+          return reqPost('/rows/delete', versionedRows, backendName)
+        })
+}
+
 function pageToPost(title, contents){
   let titleCleaned = title.replace(/\.md$/, '');
   return {

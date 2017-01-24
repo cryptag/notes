@@ -23,7 +23,7 @@ class WikiPage extends Component {
   }
 
   render(){
-    let { page } = this.props;
+    let { page, onDeleteClick } = this.props;
     let title = page.title || "untitled";
     let content = page.contents || "";
 
@@ -32,6 +32,7 @@ class WikiPage extends Component {
     return (
       <div className="wiki-page wiki-page-view">
         <div className="toolbar">
+          {page.key && <button className="btn btn-primary-dangerous" onClick={onDeleteClick}>Delete</button>}
           <button className="btn btn-primary" onClick={this.onEditClick}>Edit</button>
         </div>
         <hr/>

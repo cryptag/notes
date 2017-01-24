@@ -12,18 +12,22 @@ class WikiContainer extends Component {
   }
 
   render(){
-    let { page, shadowPage, onUpdateShadowPage, isEditing, onEditPage, onSaveClick, onCancelClick } = this.props;
+    let { page, shadowPage, onUpdateShadowPage, isEditing, onEditPage, onSaveClick, onCancelClick, onDeleteClick } = this.props;
     let { isPreviewMode, onTogglePreviewMode, saveSuccess } = this.props;
 
     return (
       <div>
-        {!isEditing && <WikiPage page={page} onEditPage={onEditPage} />}
+        {!isEditing && <WikiPage
+                        page={page}
+                        onEditPage={onEditPage}
+                        onDeleteClick={onDeleteClick} />}
         {isEditing && <WikiPageEdit page={page}
                         shadowPage={shadowPage}
                         isPreviewMode={isPreviewMode}
                         saveSuccess={saveSuccess}
                         onTogglePreviewMode={onTogglePreviewMode}
                         onUpdateShadowPage={onUpdateShadowPage}
+                        onDeleteClick={onDeleteClick}
                         onCancelClick={onCancelClick}
                         onSaveClick={onSaveClick} />}
       </div>

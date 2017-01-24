@@ -42,7 +42,7 @@ class WikiPageEdit extends Component {
   }
 
   render(){
-    let { shadowPage, isPreviewMode, saveSuccess, onSaveClick, onCancelClick } = this.props;
+    let { shadowPage, isPreviewMode, saveSuccess, onSaveClick, onCancelClick, onDeleteClick } = this.props;
     let title = shadowPage.title || "";
     let content = shadowPage.contents || "";
 
@@ -58,6 +58,7 @@ class WikiPageEdit extends Component {
       <div className="wiki-page wiki-page-edit">
         <form>
           <div className="toolbar">
+            {shadowPage.key && <button className="btn btn-primary-dangerous" onClick={onDeleteClick}>Delete</button>}
             {!saveSuccess && <button className="btn btn-primary" onClick={onSaveClick}>Save</button>}
             {saveSuccess && <button className="btn btn-primary-success" onClick={onSaveClick}>Saved!</button>}
             <button className="btn btn-default" onClick={onCancelClick}>Cancel</button>

@@ -7,9 +7,9 @@ import React, { Component } from 'react';
 import {HotKeys} from 'react-hotkeys';
 
 import { getBackends } from './data/general/backend';
-import { listPagesVersionedLatest, getPagesVersionedLatest, updatePage, createPage } from './data/wiki/pages';
+import { listPagesVersionedLatest, getPagesVersionedLatest, updatePage, createPage, deletePagesByVersionID } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
-import { versionsOfSameRow } from './utils/row';
+import { getVersionID, versionsOfSameRow } from './utils/row';
 
 import DropdownList from 'react-widgets/lib/DropdownList';
 import WikiPageList from './components/wiki/WikiPageList';
@@ -60,11 +60,13 @@ class App extends Component {
     this.onEditPage = this.onEditPage.bind(this);
     this.onCreatePage = this.onCreatePage.bind(this);
     this.onUpdatePage = this.onUpdatePage.bind(this);
+    this.onDeletePage = this.onDeletePage.bind(this);
     this.onCancelUpdate = this.onCancelUpdate.bind(this);
     this.onBlankPageClick = this.onBlankPageClick.bind(this);
     this.onSaveClick = this.onSaveClick.bind(this);
     this.onSaveSuccess = this.onSaveSuccess.bind(this);
     this.onCancelClick = this.onCancelClick.bind(this);
+    this.onDeleteClick = this.onDeleteClick.bind(this);
 
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
     this.onCloseUsernameModal = this.onCloseUsernameModal.bind(this);
@@ -309,6 +311,41 @@ class App extends Component {
       });
   }
 
+  onDeletePage(){
+    console.log('deleting!');
+    let { currentPage, currentBackendName } = this.state;
+
+    deletePagesByVersionID(getVersionID(currentPage), currentBackendName)
+      .then((response) => {
+        let deleteNdx = -1;
+
+        // Find the page we just deleted and remove it from this.state.pages
+
+        let pages = this.state.pages;
+        for (let i = 0; i < pages.length; i++) {
+          if (versionsOfSameRow(pages[i], currentPage)){
+            deleteNdx = i;
+            break
+          }
+        }
+
+        var newPages = pages;
+        if (deleteNdx !== -1){
+          // Remove old version
+          newPages = [...pages.slice(0, deleteNdx),
+                      ...pages.slice(deleteNdx+1)]
+        }
+
+        this.setState({
+          pages: newPages
+        });
+        this.onBlankPageClick();
+      })
+      .catch((err) => {
+        this.onError(`Error deleting note with ID-tag '${currentPage.key}'; error: ${err}`);
+      });
+  }
+
   onBlankPageClick(){
     // TODO: If current document has been changed in the DOM since
     // loading, don't clobber that state
@@ -345,6 +382,14 @@ class App extends Component {
     }
 
     return false;
+  }
+
+  onDeleteClick(e){
+    e.preventDefault();
+
+    if (confirm('Are you sure you want to delete this note and all its previous versions?')) {
+      this.onDeletePage();
+    }
   }
 
   onSaveSuccess(delay){
@@ -523,6 +568,7 @@ class App extends Component {
                                 onTogglePreviewMode={this.onTogglePreviewMode}
                                 onEditPage={this.onEditPage}
                                 onCancelUpdate={this.onCancelUpdate}
+                                onDeleteClick={this.onDeleteClick}
                                 onSaveClick={this.onSaveClick}
                                 onCancelClick={this.onCancelClick} />}
              </HotKeys>
