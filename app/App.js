@@ -260,6 +260,7 @@ class App extends Component {
           currentPage: newPage,
           pages: [newPage, ...this.state.pages]
         });
+        this.onUpdateShadowPage(newPage);
         this.onSaveSuccess(500);
       })
       .catch((err) => {
@@ -303,8 +304,8 @@ class App extends Component {
           currentPage: newPage,
           pages: newPages
         });
+        this.onUpdateShadowPage(newPage);
         this.onSaveSuccess(500);
-
       })
       .catch((err) => {
         this.onError(`Error updating note with ID-tag '${currentPage.key}'; error: ${err}`);
