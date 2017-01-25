@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import {HotKeys} from 'react-hotkeys';
 
 import { getBackends } from './data/general/backend';
-import { listPagesVersionedLatest, getPagesVersionedLatest, updatePage, createPage, deletePagesByVersionID } from './data/wiki/pages';
+import { listPagesVersionedLatest, getPagesVersionedLatest, updatePageSmart, createPage, deletePagesByVersionID } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
 import { getVersionID, versionsOfSameRow } from './utils/row';
 
@@ -272,7 +272,7 @@ class App extends Component {
     console.log('updating!');
     let { shadowPage, currentPage, currentBackendName } = this.state;
 
-    updatePage(currentPage.key, shadowPage.title, shadowPage.contents, currentBackendName)
+    updatePageSmart(currentPage.key, shadowPage.title, shadowPage.contents, currentPage.tags, currentBackendName)
       .then((response) => {
         let newPage = formatPage(response);
         newPage.contents = shadowPage.contents;

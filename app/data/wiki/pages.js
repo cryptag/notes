@@ -1,5 +1,5 @@
 import { reqPost, reqPut } from '../api';
-import { encodeObjForPost } from '../../utils/tags';
+import { tagByPrefix } from '../../utils/tags';
 
 const utf8 = require('utf8');
 const btoa = require('btoa');
@@ -75,4 +75,42 @@ function pageToPut(pageKey, title, contents){
 export function updatePage(pageKey, title, contents, backendName){
   let row = pageToPut(pageKey, title, contents);
   return reqPut('/rows', row, backendName);
+}
+
+export function updatePageSmart(pageKey, title, contents, tags, backendName){
+  // TODO: Considering adding CreateSmartRow endpoint to cryptagd so
+  // that removing the default tags (id:..., created:..., all) is
+  // unnecessary to manually do here.
+
+  // Remove tags we're about to re-add (prevversionrow:..., ), and
+  // ones that will be added by cryptagd (id:..., created:..., all).
+  let newTags = tags.filter(
+      t => !t.startsWith('prevversionrow:') &&
+          !t.startsWith('title:') &&
+          !t.startsWith('filename:') &&
+          !t.startsWith('id:') &&
+          !t.startsWith('created:') &&
+          t !== 'all'
+  );
+
+  let titleCleaned = title.replace(/\.md$/, '');
+
+  // Update title:... tag if it exists, even though we're
+  if (tagByPrefix(tags, 'title:') !== ''){
+    newTags.push('title:'+titleCleaned)
+  }
+
+  // If we're updating the first version of a note, then we didn't
+  // copy the (non-existent) 'origversionrow:...' tag from it, and
+  // therefore must add it here.
+  if (tagByPrefix(tags, 'origversionrow:') == ''){
+    newTags.push('origversionrow:'+pageKey)
+  }
+
+  let row = {
+    unencrypted: btoa(utf8.encode(contents || '')),
+    plaintags: newTags.concat([`filename:${titleCleaned}.md`])
+  }
+
+  return reqPost('/rows', row, backendName);
 }
