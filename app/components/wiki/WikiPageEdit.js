@@ -62,9 +62,6 @@ class WikiPageEdit extends Component {
     let title = shadowPage.title || "";
     let content = shadowPage.contents || "";
 
-    // TODO: Eventually make title editable, but for now it isn't, so
-    // let's not mislead the user
-    let readOnly = shadowPage.key ? true : false;
     let activeKey = isPreviewMode ? "2" : "1";
 
     let editorOptions = {lineWrapping: true, tabSize: 4};
@@ -80,7 +77,7 @@ class WikiPageEdit extends Component {
             <button className="btn btn-default" onClick={onCancelClick}>Cancel</button>
           </div>
           <div className="form-group page-title-bar" ref="page_title">
-            <input className="form-control" value={title} placeholder="Enter note title" readOnly={readOnly} onChange={this.onUpdateTitle}/>
+            <input className="form-control" value={title} placeholder="Enter note title" onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
             <NavItem tabIndex="-1" eventKey="1">Edit</NavItem>
