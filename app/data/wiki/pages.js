@@ -92,6 +92,12 @@ export function updatePageSmart(pageKey, title, contents, tags, backendName){
           !t.startsWith('created:') &&
           t !== 'all'
   );
+  // Tie this new note to its previous version -- if it it exists --
+  // by tag (rather than just timestamp, which is susceptible to race
+  // conditions, which is important for multi-user real-time editing.)
+  if (pageKey){
+    newTags.push('prevversionrow:'+pageKey)
+  }
 
   let titleCleaned = title.replace(/\.md$/, '');
 
