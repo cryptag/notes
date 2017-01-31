@@ -7,11 +7,18 @@ class SharingModal extends Component {
   constructor(){
     super(...arguments);
 
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.onSubmitInviteLink = this.onSubmitInviteLink.bind(this);
   }
 
   componentDidMount(){
     $(findDOMNode(this.refs.invite_url)).focus();
+  }
+
+  onKeyPress(e){
+    if (e.which === 13){
+      this.onSubmitInviteLink();
+    }
   }
 
   onSubmitInviteLink(e){
@@ -36,7 +43,7 @@ class SharingModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="flex-label-element">
-              <input type="text" className="form-control" style={{marginRight: 10}} placeholder="enter invite URL" ref="invite_url" />
+              <input type="text" className="form-control" style={{marginRight: 10}} placeholder="enter invite URL" ref="invite_url" onKeyPress={this.onKeyPress} />
               <Button onClick={this.onSubmitInviteLink} bsStyle="primary">Accept Invite</Button>
             </div>
           </Modal.Body>

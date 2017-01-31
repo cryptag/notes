@@ -7,11 +7,18 @@ class UsernameModal extends Component {
   constructor(){
     super(...arguments);
 
+    this.onUsernameKeyPress = this.onUsernameKeyPress.bind(this);
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
   }
 
   componentDidMount(){
     $(findDOMNode(this.refs.username)).find('input').focus();
+  }
+
+  onUsernameKeyPress(e){
+    if(e.which === 13){
+      this.onSetUsernameClick();
+    }
   }
 
   onSetUsernameClick(e){
@@ -37,7 +44,7 @@ class UsernameModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="form-group" ref="username">
-              <input type="text" className="form-control" defaultValue={username} placeholder="enter username" />
+              <input type="text" className="form-control" defaultValue={username} placeholder="enter username" onKeyPress={this.onUsernameKeyPress} />
             </div>
           </Modal.Body>
           <Modal.Footer>
