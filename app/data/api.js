@@ -41,7 +41,7 @@ const requestGet = function(urlSuffix, backendName){
 
 let handleResponse = function(response) {
   if (!response.ok) {
-    return new Error(response.statusText);
+    console.log("Error response:", response);
   }
   return response.json()
 }
