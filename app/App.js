@@ -5,8 +5,10 @@ import path from 'path';
 
 import React, { Component } from 'react';
 import {HotKeys} from 'react-hotkeys';
+import Button from 'react-bootstrap/lib/Button'
 
 import { getBackends } from './data/general/backend';
+import { getInvitesByURL } from './data/general/sharing';
 import { listPagesVersionedLatest, getPagesVersionedLatest, updatePageSmart, createPage, deletePagesByVersionID } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
 import { getVersionID, versionsOfSameRow } from './utils/row';
@@ -17,6 +19,7 @@ import WikiContainer from './components/wiki/WikiContainer';
 import Throbber from './components/general/Throbber';
 import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
+import SharingModal from './components/modals/Sharing';
 
 const USERNAME_KEY = 'username';
 const BACKEND_KEY = 'current_backend';
@@ -43,6 +46,7 @@ class App extends Component {
       pages: [],
       username: username,
       showUsernameModal: false,
+      showSharingModal: false,
       isLoading: true,
       isEditing: false,
       showAlert: false,
@@ -80,6 +84,9 @@ class App extends Component {
 
     this.onTogglePreviewMode = this.onTogglePreviewMode.bind(this);
 
+    this.onOpenSharingModal = this.onOpenSharingModal.bind(this);
+    this.onCloseSharingModal = this.onCloseSharingModal.bind(this);
+    this.onGetInvitesByURL = this.onGetInvitesByURL.bind(this);
   }
 
   promptForUsername(){
@@ -405,6 +412,44 @@ class App extends Component {
     }, delay)
   }
 
+  onOpenSharingModal(e){
+    this.setState({
+      showSharingModal: true
+    });
+  }
+
+  onCloseSharingModal(){
+    this.setState({
+      showSharingModal: false
+    });
+  }
+
+  onGetInvitesByURL(inviteURL){
+    getInvitesByURL(inviteURL)
+      .then((response) => {
+        let newBackends = response['new_backends'] || [];
+        if (newBackends.length === 0){
+          this.onError('Error fetching and saving new backends: ' +
+                       (response.error || response.statusText));
+          return
+        }
+
+        for (let i = 0; i < newBackends.length; i++) {
+          this.onSetBackend(newBackends[i]);
+        }
+      }).catch((err) => {
+        this.onError(`Error getting invites; error: ${err}`);
+      });
+
+      this.onCloseSharingModal();
+
+      this.setState({
+        showAlert: true,
+        alertMessage: 'Fetching and decrypting invite...',
+        alertStyle: 'warning' // Changing this changes nothing...
+      })
+  }
+
   onCloseUsernameModal(){
     this.setState({
       showUsernameModal: false
@@ -512,6 +557,7 @@ class App extends Component {
     let { alertMessage, alertStyle, showAlert} = this.state;
     let { isPreviewMode, onTogglePreviewMode } = this.state;
     let { saveSuccess } = this.state;
+    let { showSharingModal } = this.state;
 
     return (
      <HotKeys keyMap={appKeyMap} handlers={this.hotkeyHandlers()}>
@@ -537,6 +583,19 @@ class App extends Component {
                                   showModal={showUsernameModal}
                                   onSetUsername={this.onSetUsername}
                                   onCloseModal={this.onCloseUsernameModal} />}
+
+          <hr/>
+
+          {showSharingModal && <SharingModal
+                                  showModal={showSharingModal}
+                                  onCloseModal={this.onCloseSharingModal}
+                                  onSubmitInviteLink={this.onGetInvitesByURL} />}
+
+          <div className="flex-label-element">
+            <Button bsStyle="primary" bsSize="lg" onClick={this.onOpenSharingModal}>
+              Sharing
+            </Button>
+          </div>
 
           <div className="backend-container" onDragOver={this.onDragOver} onDrop={this.onDrop}>
             <h3>Backends</h3>
