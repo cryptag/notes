@@ -10,6 +10,10 @@ class UsernameModal extends Component {
     this.onSetUsernameClick = this.onSetUsernameClick.bind(this);
   }
 
+  componentDidMount(){
+    $(findDOMNode(this.refs.username)).find('input').focus();
+  }
+
   onSetUsernameClick(e){
     let { onSetUsername } = this.props;
     let usernameBox = $(findDOMNode(this.refs.username));
