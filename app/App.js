@@ -555,7 +555,7 @@ class App extends Component {
     let { username, showUsernameModal } = this.state;
     let { backends, currentBackendName } = this.state;
     let { alertMessage, alertStyle, showAlert} = this.state;
-    let { isPreviewMode, onTogglePreviewMode } = this.state;
+    let { isPreviewMode } = this.state;
     let { saveSuccess } = this.state;
     let { showSharingModal } = this.state;
 
