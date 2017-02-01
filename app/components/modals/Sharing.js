@@ -38,7 +38,7 @@ class SharingModal extends Component {
     return (
       <div>
         <Modal show={showModal} onHide={onCloseModal} bsSize="large" aria-labelledby="contained-modal-title-lg" animation={true}>
-          <Modal.Header>
+          <Modal.Header closeButton>
             <Modal.Title>Sharing</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -48,7 +48,7 @@ class SharingModal extends Component {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={onCloseModal}>Close</Button>
+            {/*<Button onClick={onCloseModal}>Close</Button>*/}
           </Modal.Footer>
         </Modal>
       </div>
