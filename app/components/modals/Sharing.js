@@ -43,7 +43,7 @@ class SharingModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="flex-label-element">
-              <input type="text" className="form-control" style={{marginRight: 10}} placeholder="Enter invite URL: https://minishare.cryptag.org/...)" ref="invite_url" onKeyPress={this.onKeyPress} />
+              <input type="text" className="form-control" style={{marginRight: 10}} placeholder="Enter invite URL: https://minishare.cryptag.org/..." ref="invite_url" onKeyPress={this.onKeyPress} />
               <Button onClick={this.onSubmitInviteLink} bsStyle="primary">Accept Invite</Button>
             </div>
           </Modal.Body>

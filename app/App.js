@@ -191,7 +191,7 @@ class App extends Component {
         isEditing: true
       });
 
-      let errStr = (resp.message || resp.statusText);
+      let errStr = (resp.message || resp.statusText || '');
 
       if (errStr.toLowerCase().includes('not found')) {
         if (this.state.alertMessage === errNoNotesFound){
