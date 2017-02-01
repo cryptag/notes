@@ -184,7 +184,6 @@ class App extends Component {
       console.log(resp);
 
       this.setState({
-        currentPage: {},
         pages: [],
         isLoading: false,
         isEditing: true
