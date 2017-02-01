@@ -176,10 +176,12 @@ class App extends Component {
         showAlert: false,
         alertMessage: ''
       });
-    }).catch((err) => {
+    }).catch((resp) => {
       // Would probably be better to revert to previous backend and
       // continue showing its pages list, but this is a quick fix that
       // keeps the selected backend and the pages list in sync
+
+      console.log(resp);
 
       this.setState({
         currentPage: {},
@@ -188,7 +190,9 @@ class App extends Component {
         isEditing: true
       });
 
-      if (err.message.toLowerCase().includes('not found')) {
+      let errStr = (resp.message || resp.statusText);
+
+      if (errStr.toLowerCase().includes('not found')) {
         if (this.state.alertMessage === errNoNotesFound){
           // Don't keep bugging the user
           return;
@@ -197,7 +201,14 @@ class App extends Component {
         return;
       }
 
-      this.onError(`Error loading notes list: ${err}. (Make sure cryptagd is running!)`);
+      if (err instanceof Response){
+        resp.json().then(respJSON => {
+          this.onError(`Error loading notes list; from cryptagd: ${respJSON.error}`);
+        })
+        return;
+      }
+
+      this.onError(`Error loading notes list: ${errStr}. (Make sure cryptagd is running!)`);
     });
   }
 

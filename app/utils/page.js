@@ -5,7 +5,7 @@ const atob = require('atob');
 
 
 export function formatPages(rawPages){
-  if (rawPages instanceof Error){
+  if (rawPages instanceof Response){
     throw rawPages;
   }
   let pages = rawPages.map(row => formatPage(row));
