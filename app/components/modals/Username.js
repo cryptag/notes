@@ -44,7 +44,7 @@ class UsernameModal extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="form-group" ref="username">
-              <input type="text" className="form-control" defaultValue={username} placeholder="enter username" onKeyPress={this.onUsernameKeyPress} />
+              <input type="text" className="form-control" defaultValue={username} placeholder="Enter username (e.g., trinity)" onKeyPress={this.onUsernameKeyPress} />
             </div>
           </Modal.Body>
           <Modal.Footer>
