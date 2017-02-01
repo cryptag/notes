@@ -436,11 +436,18 @@ class App extends Component {
 
   onGetInvitesByURL(inviteURL){
     getInvitesByURL(inviteURL)
-      .then((response) => {
-        let newBackends = response['new_backends'] || [];
+      .then((resp) => {
+        let newBackends = resp['new_backends'] || [];
         if (newBackends.length === 0){
+          if (resp instanceof Response){
+            resp.json().then(respJSON => {
+              this.onError('Error fetching invite and creating Backend; error: ' +
+                           respJSON.error);
+            })
+            return;
+          }
           this.onError('Error fetching and saving new backends: ' +
-                       (response.error || response.statusText));
+                       resp.statusText);
           return
         }
 
