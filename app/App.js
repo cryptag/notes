@@ -30,7 +30,9 @@ let wikiContainerKeyMap = {
   'saveNote': 'mod+s'
 }
 let appKeyMap = {
-  'newNote': 'mod+n'
+  'newNote': 'mod+n',
+  'editNote': 'mod+e',
+  'togglePreviewMode': 'mod+p'
 }
 
 class App extends Component {
@@ -563,7 +565,10 @@ class App extends Component {
   hotkeyHandlers() {
     return {
       'newNote': this.onBlankPageClick,
-      'saveNote': this.onSaveClick
+      'editNote': this.onEditPage,
+      'saveNote': this.onSaveClick,
+      'togglePreviewMode': this.onTogglePreviewMode.bind(
+          this, !this.state.isPreviewMode)
     }
   }
 

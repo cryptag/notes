@@ -12,6 +12,8 @@ class WikiContainer extends Component {
   }
 
   render(){
+    $('.MDEditor_toolbarButton').attr('tabindex', -1);
+
     let { page, shadowPage, onUpdateShadowPage, isEditing, onEditPage, onSaveClick, onCancelClick, onDeleteClick } = this.props;
     let { isPreviewMode, onTogglePreviewMode, saveSuccess } = this.props;
 

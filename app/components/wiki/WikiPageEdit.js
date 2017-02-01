@@ -12,11 +12,24 @@ class WikiPageEdit extends Component {
     this.onChangeEditMode = this.onChangeEditMode.bind(this);
     this.onUpdateContent = this.onUpdateContent.bind(this);
     this.onUpdateTitle = this.onUpdateTitle.bind(this);
+
+    this.focusTitle = this.focusTitle.bind(this);
+    this.focusEdit = this.focusEdit.bind(this);
+  }
+
+  focusTitle(){
+    console.log('focusTitle');
+    $(findDOMNode(this.refs.page_title)).find('input').focus();
+  }
+
+  focusEdit(){
+    console.log('focusEdit');
+    $('.MDEditor_editor .CodeMirror').find('textarea').focus();
   }
 
   componentDidMount(){
     // By default, title has focus
-    $(findDOMNode(this.refs.page_title)).find('input').focus();
+    this.focusTitle();
 
     let {isPreviewMode, shadowPage } = this.props;
 
@@ -24,7 +37,7 @@ class WikiPageEdit extends Component {
 
     // ...but if the title already set, the body should get focus
     if (!isPreviewMode && shadowPage.key){
-      $('.MDEditor_editor .CodeMirror').find('textarea').focus();
+      this.focusEdit();
     }
 
     // Let user <tab> directly from note title to body without
@@ -35,7 +48,14 @@ class WikiPageEdit extends Component {
   }
 
   onChangeEditMode(eventKey){
-    this.props.onTogglePreviewMode(eventKey === "2" ? true : false);
+    let isPreviewMode = (eventKey === "2" ? true : false);
+    this.props.onTogglePreviewMode(isPreviewMode);
+
+    if (isPreviewMode){
+      this.focusTitle();
+    } else {
+      this.focusEdit();
+    }
   }
 
   onUpdateContent(newContents){
@@ -80,8 +100,8 @@ class WikiPageEdit extends Component {
             <input className="form-control" value={title} placeholder="Enter note title" onChange={this.onUpdateTitle}/>
           </div>
           <Nav bsStyle="tabs" activeKey={activeKey} onSelect={this.onChangeEditMode}>
-            <NavItem tabIndex="-1" eventKey="1">Edit</NavItem>
-            <NavItem tabIndex="-1" eventKey="2">Preview</NavItem>
+            <NavItem id="edit-tab" tabIndex="-1" eventKey="1">Edit</NavItem>
+            <NavItem id="preview-tab" tabIndex="-1" eventKey="2">Preview</NavItem>
           </Nav>
           <div className="form-group page-content" ref="page_content">
             {isPreviewMode && <ReactMarkdown className="wiki-page-view" source={content} escapeHtml={true} />}

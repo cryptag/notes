@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root" class="mousetrap"></div>
   </body>
 
   <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
@@ -24,6 +24,7 @@
   <!-- bower:js -->
   <script src="static/lib/jquery/dist/jquery.js"></script>
   <script src="static/lib/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="node_modules/mousetrap/mousetrap.js"></script>
   <!-- endbower -->
   <!-- inject:js -->
   <!-- endinject -->
@@ -40,6 +41,25 @@
       event.preventDefault();
       shell.openExternal(this.href);
     });
+  </script>
+
+  <script>
+    Mousetrap.bind('mod+p', function() {
+      console.log('Mousetrap.bind: pressed mod+p');
+      document.getElementById('preview-tab').click();
+
+      return false;
+    })
+  </script>
+
+  <script>
+    Mousetrap.bind('mod+e', function() {
+      console.log('Mousetrap.bind: pressed mod+e');
+      document.getElementById('edit-tab').click();
+      $(".MDEditor_editor .CodeMirror").find('textarea').focus();
+
+      return false;
+    })
   </script>
 
   <script>
