@@ -202,7 +202,7 @@ class App extends Component {
         return;
       }
 
-      if (err instanceof Response){
+      if (resp instanceof Response){
         resp.json().then(respJSON => {
           this.onError(`Error loading notes list; from cryptagd: ${respJSON.error}`);
         })
