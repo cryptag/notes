@@ -4,9 +4,31 @@
 
 ![](https://tryingtobeawesome.com/files/screenshot-cryptag-notes-editmode.png)
 
-This is a desktop app made with electron and React.js that talks to a
-local server/API/daemon `cryptagd` which is provided by
-[CrypTag](https://github.com/cryptag/cryptag).
+CrypTag Notes is a secure note-taking app.  It encrypts your notes
+(which are stored as Markdown files) and allows you to store them just
+about anywhere -- a local folder, Dropbox, Sandstorm, or your own
+server running `cryptag-webserver`.
+
+You can also securely share these folders full of (encrypted) notes
+with others!
+
+CrypTag Notes is a desktop app made with
+[Electron](https://github.com/electron/electron) and React.js that
+talks to a local server/API/daemon, `cryptagd`, which is run by the
+Electron app if `cryptagd` is not running already.
+
+(If you would also like to store snippets of websites you visit as
+notes,
+[install the CrypTag Clip Chrome extension](https://chrome.google.com/webstore/detail/cryptag-clip/kiakdfalhdbjkllkobeoheekddcomchb)
+and make sure Notes is also running.)
+
+
+## Installing from Binaries
+
+**For announcements of newly-released versions of CrypTag Notes**,
+including links to conveniently pre-built versions of this app, please
+[see these posts on my Patreon!](https://www.patreon.com/cryptag/posts?tag=notes)
+
 
 ## Pre-requisites
 
