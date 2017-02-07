@@ -12,7 +12,9 @@ body {
 .wiki-page {
   margin-bottom: 15px; }
   .wiki-page pre > code {
-    font-size: 150%; }
+    font-size: 145%; }
+  .wiki-page blockquote {
+    font-size: 110%; }
   .wiki-page .toolbar {
     text-align: right; }
     .wiki-page .toolbar button {
