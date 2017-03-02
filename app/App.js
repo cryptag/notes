@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import {HotKeys} from 'react-hotkeys';
 import Button from 'react-bootstrap/lib/Button'
 
-import { getBackends } from './data/general/backend';
+import { getBackends, createBackend } from './data/general/backend';
 import { getInvitesByURL } from './data/general/sharing';
 import { listPagesVersionedLatest, getPagesVersionedLatest, updatePageSmart, createPage, deletePagesByVersionID } from './data/wiki/pages';
 import { formatPages, formatPage } from './utils/page';
@@ -20,6 +20,7 @@ import Throbber from './components/general/Throbber';
 import AlertContainer from './components/general/AlertContainer';
 import UsernameModal from './components/modals/Username';
 import SharingModal from './components/modals/Sharing';
+import BackendModal from './components/modals/Backend';
 
 const USERNAME_KEY = 'username';
 const BACKEND_KEY = 'current_backend';
@@ -49,6 +50,7 @@ class App extends Component {
       username: username,
       showUsernameModal: false,
       showSharingModal: false,
+      showBackendModal: false,
       isLoading: true,
       isEditing: false,
       showAlert: false,
@@ -81,6 +83,9 @@ class App extends Component {
     this.onSelectBackend = this.onSelectBackend.bind(this);
     this.onSetBackend = this.onSetBackend.bind(this);
     this.onUpdateShadowPage = this.onUpdateShadowPage.bind(this);
+    this.onNewBackendClick = this.onNewBackendClick.bind(this);
+    this.onCloseBackendModal = this.onCloseBackendModal.bind(this);
+    this.onCreateBackend = this.onCreateBackend.bind(this);
 
     this.onHideAlert = this.onHideAlert.bind(this);
 
@@ -562,6 +567,40 @@ class App extends Component {
     }
   }
 
+  onNewBackendClick(){
+    this.setState({
+      showBackendModal: true
+    });
+  }
+
+  onCloseBackendModal(){
+    this.setState({
+      showBackendModal: false
+    });
+  }
+
+  onCreateBackend(bkConfig){
+    createBackend(bkConfig)
+      .then((resp) => {
+          this.onCloseBackendModal();
+
+          if (resp instanceof Response){
+            resp.json().then(respJSON => {
+              this.onError('Error creating new Backend: ' + respJSON.error);
+            })
+            return;
+          }
+          this.setState({
+            showAlert: true,
+            alertMessage: `New Backend ${bkConfig.Name} created!`,
+            alertStyle: 'success' // Changing this changes nothing...
+          })
+          this.loadBackends();
+          this.onSetBackend(bkConfig.Name);
+          return;
+      })
+  }
+
   hotkeyHandlers() {
     return {
       'newNote': this.onBlankPageClick,
@@ -579,7 +618,7 @@ class App extends Component {
     let { alertMessage, alertStyle, showAlert} = this.state;
     let { isPreviewMode } = this.state;
     let { saveSuccess } = this.state;
-    let { showSharingModal } = this.state;
+    let { showSharingModal, showBackendModal } = this.state;
 
     return (
      <HotKeys keyMap={appKeyMap} handlers={this.hotkeyHandlers()}>
@@ -620,13 +659,20 @@ class App extends Component {
           </div>
 
           <div className="backend-container" onDragOver={this.onDragOver} onDrop={this.onDrop}>
-            <h3>Backends</h3>
+            <div className="flex-label-element">
+              <h3>Backends</h3>
+              <button className="btn btn-primary" onClick={this.onNewBackendClick}>+</button>
+            </div>
             <DropdownList duration={0}
               data={backends.map(bk => bk.Name)}
               value={currentBackendName}
               onChange={this.onSelectBackend} />
           </div>
 
+          {showBackendModal && <BackendModal
+                                  showModal={showBackendModal}
+                                  onCloseModal={this.onCloseBackendModal}
+                                  onCreateBackend={this.onCreateBackend} />}
           <WikiPageList
             pages={pages}
             loadPageByKey={this.loadPageByKey}
