@@ -13,7 +13,7 @@ class WikiPageList extends Component {
     let { pages, loadPageByKey, onBlankPageClick } = this.props;
 
     return (
-      <div className="pages">
+      <div style={{marginTop: 15}} className="pages">
         <div className="flex-label-element">
           <h3>Notes</h3>
           <button className="btn btn-primary" onClick={onBlankPageClick}>+</button>

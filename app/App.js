@@ -659,7 +659,7 @@ class App extends Component {
           </div>
 
           <div className="backend-container" onDragOver={this.onDragOver} onDrop={this.onDrop}>
-            <div className="flex-label-element">
+            <div style={{marginTop: 15}} className="flex-label-element">
               <h3>Backends</h3>
               <button className="btn btn-primary" onClick={this.onNewBackendClick}>+</button>
             </div>
