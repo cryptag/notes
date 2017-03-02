@@ -109,6 +109,7 @@ class BackendModal extends Component {
                 duration={0}
                 data={["filesystem", "sandstorm", "webserver"]}
                 defaultValue={"filesystem"}
+                onChange={this.onSelectBackend}
                 onSelect={this.onSelectBackend} />
 
               {typeFilesystem && <label htmlFor="bk_data_path">Which folder should your encrypted notes be stored in?</label>}
